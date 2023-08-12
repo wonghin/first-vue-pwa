@@ -56,18 +56,19 @@ const { data: speciesData, isFetching: speciesFetching } = useGetPokmonSpecies(n
       <div class="d-flex align-center flex-column" v-if="data">
         <div v-for="(stat, i) in data.stats" :key="i" class="d-flex flex-column"
           style="width: 40vw; min-width: 300px; max-width: 500px">
+
           <div class="d-flex align-center justify-space-between">
             <div>
               <div>{{ stat.stat.name }}:</div>
-              <!-- <div>{{ stat.base_stat }}</div> -->
             </div>
-            <div style="width: 40vw; max-width: 300px">
+            <div style="width: 30vw; max-width: 200px">
               <v-progress-linear :model-value="(stat.base_stat / 200) * 100" bg-color="pink-lighten-3"
                 color="pink-lighten-1" height="8">
                 <div style="font-size: xx-small">{{ stat.base_stat }}</div>
               </v-progress-linear>
             </div>
           </div>
+
         </div>
         <div class="mt-10">
           <!-- <div v-if="speciesFetching">loading...</div>

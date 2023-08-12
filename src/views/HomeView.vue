@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, type ComputedRef } from 'vue'
-import { useQuery } from 'vue-query'
-import _ from 'lodash'
-import { useDisplay } from 'vuetify'
-import Card from '@/components/card/Card.vue'
-import { usePokemonItemStore, type PokemonItemStore } from '@/hooks/usePokemonItemStore'
 import { getAll } from '@/api/pokemonApi'
+import Card from '@/components/card/Card.vue'
+import PageCardSkeleton from '@/components/loading/PageCardSkeleton.vue'
 import { useLayoutStore } from '@/hooks/useLayoutStore'
-import { watch } from 'vue'
+import { usePokemonItemStore, type PokemonItemStore } from '@/hooks/usePokemonItemStore'
+import { ref, watch } from 'vue'
+import { useQuery } from 'vue-query'
+import { useDisplay } from 'vuetify'
 
 const { xs, sm } = useDisplay()
 const layout = useLayoutStore()
@@ -46,13 +45,14 @@ watch(isFetching, () => {
 </script>
 
 <template>
+  <PageCardSkeleton v-if="isLoading" />
   <v-container fluid :class="layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'overflow-hidden' : ''"
     :style="layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'height:80vh' : ''">
     <div>
       <div v-if="isLoading">Loading...</div>
       <div v-else-if="isError">An error has occurred: {{ error }}</div>
 
-      <v-row v-else class="mt-2">
+      <v-row v-if="data" class="mt-2">
         <v-col class="d-flex justify-center" cols="12" sm="6" md="4" v-for="(item, index) in data.results"
           :key="item.name">
           <div @click="handleToggle({ props: { ...item } })">

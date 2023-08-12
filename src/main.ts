@@ -7,14 +7,19 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import * as labsComponents from 'vuetify/labs/components'
 import { md1, md3 } from 'vuetify/blueprints'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import { VueQueryPlugin } from "vue-query";
 import '@mdi/font/css/materialdesignicons.css'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
 const vuetify = createVuetify({
-    components,
+    components: {
+        ...components,
+        ...labsComponents,
+    },
     directives,
     ssr: true,
     theme: { defaultTheme: 'dark' },

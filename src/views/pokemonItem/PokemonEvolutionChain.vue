@@ -51,12 +51,12 @@ const image = (id: number) => {
 </script>
 <template>
   <div v-if="data">
-    <v-row>
+    <v-row cols="12" sm="6" md="4">
       <v-col v-for="item in traverseObject(data).slice().reverse()" :key="item.id">
-        <div>
+        <!-- <v-img height="20vw" width="20vw" class="bg-blue-grey-darken-1"></v-img> -->
+        <div class="d-flex flex-column justify-center align-center">
           <v-img :src="image(item.id)" height="20vw" width="20vw"></v-img>
-          <!-- <v-img height="20vw" width="20vw" class="bg-blue-grey-darken-1"></v-img> -->
-          <div class="text-center">
+          <div>
             {{ item.name }}
           </div>
         </div>

@@ -43,21 +43,22 @@ const { data, isLoading } = useGetOnePokemonByProps(name)
       <div class="position-absolute" style="right: 10px; top: 10px">
         <v-chip class="elevation-1" size="small">ID: {{ cardProps.id }}</v-chip>
       </div>
-      <div class="d-flex justify-center">
+      <v-card-item class="d-flex justify-center align-center">
         <v-img :src="imageUrl" height="20vh" width="20vh"> </v-img>
         <!-- <v-img height="20vh" width="20vh"> </v-img> -->
-      </div>
+
+      </v-card-item>
 
       <v-card-title>
         {{ cardProps.title }}
       </v-card-title>
+
       <v-card-text class="d-flex">
-        <v-chip v-if="isLoading"> </v-chip>
+        <v-chip style="width: 60px;" class="mr-2" v-if="isLoading"></v-chip>
         <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 elevation-1">
           {{ item.type.name }}
         </v-chip>
       </v-card-text>
-      <!-- <div v-if="specisData">{{ specisData }}</div> -->
     </v-card>
   </v-hover>
 </template>

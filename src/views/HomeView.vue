@@ -46,24 +46,15 @@ watch(isFetching, () => {
 </script>
 
 <template>
-  <v-container
-    fluid
-    :class="layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'overflow-hidden' : ''"
-    :style="layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'height:80vh' : ''"
-  >
+  <v-container fluid :class="layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'overflow-hidden' : ''"
+    :style="layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'height:80vh' : ''">
     <div>
       <div v-if="isLoading">Loading...</div>
       <div v-else-if="isError">An error has occurred: {{ error }}</div>
 
       <v-row v-else class="mt-2">
-        <v-col
-          class="d-flex justify-center"
-          cols="12"
-          sm="6"
-          md="4"
-          v-for="(item, index) in data.results"
-          :key="item.name"
-        >
+        <v-col class="d-flex justify-center" cols="12" sm="6" md="4" v-for="(item, index) in data.results"
+          :key="item.name">
           <div @click="handleToggle({ props: { ...item } })">
             <!-- <div @click="handleToggle(item.name, item.id, item.species.url)"> -->
             <Card :title="item.name" :id="getImageUrlId(item.url)" :isLoading="isLoading" />
@@ -72,15 +63,8 @@ watch(isFetching, () => {
       </v-row>
     </div>
 
-    <v-pagination
-      v-if="data"
-      :length="100"
-      v-on:next="handlePagination"
-      v-on:prev="handlePagination"
-      v-on:update:model-value="handlePagination"
-      :density="sm || xs ? 'comfortable' : 'default'"
-      class="mb-12"
-    >
+    <v-pagination v-if="data" :length="100" v-on:next="handlePagination" v-on:prev="handlePagination"
+      v-on:update:model-value="handlePagination" :density="sm || xs ? 'comfortable' : 'default'" class="mb-16 mt-2">
     </v-pagination>
   </v-container>
 </template>

@@ -44,23 +44,11 @@ const matchPathPattern = (itemValue: string) => {
 </script>
 
 <template>
-  <div
-    style="position: fixed; bottom: 0; width: 100vw"
-    v-if="sm || xs"
-    class="elevation-8"
-    :style="{ 'background-color': theme.global.current.value.dark ? '#212121' : '#FFFFFF' }"
-  >
-    <div class="d-flex justify-space-evenly align-center mt-2 pb-2">
-      <v-btn
-        variant="text"
-        @click="handlerNav(item.value)"
-        :value="item.value"
-        v-for="item in drawerItems"
-        :key="item.value"
-        :active="matchPathPattern(item.value)"
-        :class="item.icon"
-        class="d-flex align-center"
-      >
+  <div style="position: fixed; bottom: 0; width: 100vw" v-if="sm || xs" class="elevation-8"
+    :style="{ 'background-color': theme.global.current.value.dark ? '#212121' : '#FFFFFF' }">
+    <div class="d-flex justify-space-evenly align-center mt-2 pb-2 mb-6">
+      <v-btn variant="text" @click="handlerNav(item.value)" :value="item.value" v-for="item in drawerItems"
+        :key="item.value" :active="matchPathPattern(item.value)" :class="item.icon" class="d-flex align-center">
       </v-btn>
     </div>
   </div>

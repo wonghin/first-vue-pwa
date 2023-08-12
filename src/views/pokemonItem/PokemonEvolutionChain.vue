@@ -23,9 +23,8 @@ const {
   isError,
   error,
   isFetching,
-  data: myData
+  data
 } = useGetEvolutionChain(evolutionChainUrlRef, name)
-const data = reactive<EvolutionChain>(myData)
 
 const nameItems = reactive<EvolveChain[]>([])
 

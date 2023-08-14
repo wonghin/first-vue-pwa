@@ -7,6 +7,8 @@ export interface PokemonItemStore {
     id: number
     evolutionChainUrl: string
     pokemonSpeciesUrl: string
+
+    favouritePokemonList: Object[]
 }
 
 export const usePokemonItemStore = defineStore('pokemon', {
@@ -17,7 +19,8 @@ export const usePokemonItemStore = defineStore('pokemon', {
             id: 1,
             paginationLoading: false,
             evolutionChainUrl: '',
-            pokemonSpeciesUrl: ''
+            pokemonSpeciesUrl: '',
+            favouritePokemonList: []
         }
     }
 })

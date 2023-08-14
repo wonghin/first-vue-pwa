@@ -86,17 +86,17 @@ export const useGetOnePokemon = () => {
 
     });
 }
-export const useGetOnePokemonByProps = (name: Ref<string>, enabled: boolean = true) => {
+export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true) => {
 
     async function getOnePokemon() {
         const { data } = await axios({
             method: 'get',
-            url: basePokemonApi + `pokemon/${name.value}`
+            url: basePokemonApi + `pokemon/${id.value}`
         })
         return data
     }
     return useQuery({
-        queryKey: ["getOnePokemon", name],
+        queryKey: ["getOnePokemon", id],
         queryFn: () => getOnePokemon(),
         enabled: enabled,
         refetchOnWindowFocus: false,
@@ -106,18 +106,18 @@ export const useGetOnePokemonByProps = (name: Ref<string>, enabled: boolean = tr
 }
 
 
-export const useGetPokmonSpecies = (name: Ref<string>) => {
+export const useGetPokmonSpecies = (id: Ref<number>) => {
     const getPokmonSpecies = async () => {
         const { data } = await axios({
             method: 'get',
-            url: basePokemonApi + `pokemon-species/${name.value}/`
+            url: basePokemonApi + `pokemon-species/${id.value}/`
         })
         return data
     }
     return useQuery({
-        queryKey: ["getPokmonSpecies", name],
+        queryKey: ["getPokmonSpecies", id],
         queryFn: () => getPokmonSpecies(),
-        enabled: !!name,
+        enabled: !!id,
         refetchOnWindowFocus: false,
         keepPreviousData: true
 
@@ -126,7 +126,7 @@ export const useGetPokmonSpecies = (name: Ref<string>) => {
 
 
 
-export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>, name: Ref<string>) => {
+export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>) => {
 
 
     const getEvolutionChain = async () => {
@@ -137,9 +137,9 @@ export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>, name: Ref<s
         return data
     }
     return useQuery({
-        queryKey: ["getEvolutionChain", name],
+        queryKey: ["getEvolutionChain", evolutionChainUrl],
         queryFn: () => getEvolutionChain(),
-        enabled: !!evolutionChainUrl,
+        enabled: true,
         refetchOnWindowFocus: false,
         keepPreviousData: true
 

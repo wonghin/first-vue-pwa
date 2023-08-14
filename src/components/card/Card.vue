@@ -1,52 +1,67 @@
 <script setup lang="ts">
-import { useGetOnePokemonByProps } from '@/api/pokemonApi'
-import { computed, ref } from 'vue'
+import { useGetOnePokemonByProps } from "@/api/pokemonApi";
+import { computed, ref } from "vue";
+import LikeButton from "../button/LikeButton.vue";
 
 interface CardProps {
-  image?: string
-  title: string
-  id: number
-  isLoading?: boolean
+  image?: string;
+  title: string;
+  id: number;
+  isLoading?: boolean;
 
   // types?: Object
   // weight?: number
 }
 
 interface TypeArray {
-  types: TypeElement[]
+  types: TypeElement[];
 }
 
 interface TypeElement {
-  slot: number
-  type: Type
+  slot: number;
+  type: Type;
 }
 
 interface Type {
-  name: string
-  url: string
+  name: string;
+  url: string;
 }
 
-const cardProps = defineProps<CardProps>()
+const cardProps = defineProps<CardProps>();
 
 const imageUrl = computed(
   () =>
     `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${cardProps.id}.png`
-)
-const name = ref<string>(cardProps.title)
-const { data, isLoading } = useGetOnePokemonByProps(name)
+);
+const name = ref<string>(cardProps.title);
+const id = ref<number>(cardProps.id);
+const { data, isLoading } = useGetOnePokemonByProps(id);
 </script>
 
 <template>
   <v-hover v-slot="{ isHovering, props }">
-    <v-card width="30vw" min-width="285" v-bind="props" :elevation="isHovering ? 24 : 6" hover
-      :loading="cardProps.isLoading" class="rounded-b-shaped">
+    <v-card
+      width="30vw"
+      min-width="285"
+      v-bind="props"
+      :elevation="isHovering ? 24 : 6"
+      hover
+      :loading="cardProps.isLoading"
+      class="rounded-b-shaped"
+    >
+      <LikeButton class="position-absolute" style="left: 10px; top: 10px" />
       <div class="position-absolute" style="right: 10px; top: 10px">
         <v-chip class="elevation-1" size="small">ID: {{ cardProps.id }}</v-chip>
       </div>
       <v-card-item class="d-flex justify-center align-center">
         <v-img :src="imageUrl" height="20vh" width="20vh"> </v-img>
-        <!-- <v-img height="20vh" width="20vh"> </v-img> -->
-
+        <!-- <v-img
+          height="20vh"
+          width="20vh"
+          class="bg-grey-darken-3"
+          style="z-index: -1"
+        >
+        </v-img> -->
       </v-card-item>
 
       <v-card-title>
@@ -54,8 +69,13 @@ const { data, isLoading } = useGetOnePokemonByProps(name)
       </v-card-title>
 
       <v-card-text class="d-flex">
-        <v-chip style="width: 60px;" class="mr-2" v-if="isLoading"></v-chip>
-        <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 elevation-1">
+        <v-chip style="width: 60px" class="mr-2" v-if="isLoading"></v-chip>
+        <v-chip
+          v-if="data"
+          v-for="(item, index) in data.types"
+          :key="index"
+          class="mr-2 elevation-1"
+        >
           {{ item.type.name }}
         </v-chip>
       </v-card-text>

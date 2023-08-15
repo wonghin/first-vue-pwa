@@ -7,14 +7,16 @@ import { ref } from "vue";
 import _ from "lodash";
 import { watch } from "vue";
 import { useDisplay } from "vuetify/lib/framework.mjs";
+import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
+import LikeButton from "@/components/button/LikeButton.vue";
 
 const pokemonItem = usePokemonItemStore();
 const { name, id } = storeToRefs(pokemonItem);
 const { xs, sm } = useDisplay();
+const { stage } = useDevelopmentstore();
 
 const { isError, error, isFetching, data } = useGetOnePokemonByProps(id, true);
 // const data = reactive<PokemonItem>(myData)
-
 const {
   data: speciesData,
   isFetching: speciesFetching,
@@ -40,7 +42,9 @@ watch(data, (data) => {
   >
     <div v-if="isFetching"></div>
     <!-- <div v-else-if="isError">{{ error.message }}</div> -->
+
     <v-icon
+      v-if="pokemonItem.id !== 1"
       color="grey-darken-3"
       icon="mdi-chevron-left"
       size="50px"
@@ -73,19 +77,13 @@ watch(data, (data) => {
       @click="pokemonItem.isPokemonItemOpen = !pokemonItem.isPokemonItemOpen"
     >
     </v-btn>
+    <LikeButton style="position: absolute; top: 20px; right: 20px" />
     <div class="ma-4">
       <v-container fluid v-if="data">
         <div class="d-flex justify-center">
           <div>
             <!-- <div style="height: 20vw; width: 20vw; background-color: brown" class="elevation-6"></div> -->
             <div class="d-flex justify-space-between">
-              <!-- <v-img
-                height="30vw"
-                width="30vw"
-                max-height="300px"
-                max-width="300px"
-                class="bg-grey-darken-3"
-              ></v-img> -->
               <v-img
                 :src="
                   data.sprites.versions?.['generation-v']['black-white']
@@ -95,6 +93,15 @@ watch(data, (data) => {
                 width="30vw"
                 max-height="300px"
                 max-width="300px"
+                v-if="stage"
+              ></v-img>
+              <v-img
+                height="30vw"
+                width="30vw"
+                max-height="300px"
+                max-width="300px"
+                class="bg-grey-darken-3"
+                v-else
               ></v-img>
 
               <!-- <v-img

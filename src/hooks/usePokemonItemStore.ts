@@ -13,6 +13,7 @@ export interface PokemonItemStore {
 
 export const usePokemonItemStore = defineStore('pokemon', {
     state: (): PokemonItemStore => {
+
         return {
             isPokemonItemOpen: false,
             name: "bulbasaur",

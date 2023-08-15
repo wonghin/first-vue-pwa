@@ -5,6 +5,7 @@ import { basePokemonApi } from "@/constants";
 import { usePokemonItemStore } from '../hooks/usePokemonItemStore';
 import { storeToRefs } from "pinia";
 import type { PokemonItem } from "@/types/PokemonItem";
+import { EvolutionChain } from "@/types/EvolutionChain";
 
 
 export const useTestApi = (page: number) => {
@@ -68,7 +69,7 @@ export const useGetOnePokemon = () => {
 
     const pokemonItem = usePokemonItemStore()
     const { name } = storeToRefs(pokemonItem)
-    async function getOnePokemon() {
+    async function getOnePokemon(): Promise<PokemonItem> {
 
         console.log("pokemonItem: ", name.value);
         const { data } = await axios({
@@ -98,9 +99,10 @@ export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true
     return useQuery({
         queryKey: ["getOnePokemon", id],
         queryFn: () => getOnePokemon(),
-        enabled: enabled,
+        enabled: !!id,
         refetchOnWindowFocus: false,
-        keepPreviousData: true
+        keepPreviousData: true,
+        staleTime: Infinity
 
     });
 }
@@ -129,7 +131,7 @@ export const useGetPokmonSpecies = (id: Ref<number>) => {
 export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>) => {
 
 
-    const getEvolutionChain = async () => {
+    async function getEvolutionChain(): Promise<EvolutionChain> {
         const { data } = await axios({
             method: 'get',
             url: evolutionChainUrl.value

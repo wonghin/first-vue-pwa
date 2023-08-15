@@ -5,6 +5,7 @@ import { computed, reactive, ref } from "vue";
 import _ from "lodash";
 import { getUrlId } from "@/utils/function";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
+import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 
 interface Props {
   evolutionChainUrl: string;
@@ -50,6 +51,7 @@ const image = (id: number) => {
 const handleClickEvolveChainItem = (id: number) => {
   pokemonItem.id = id;
 };
+const { stage } = useDevelopmentstore();
 </script>
 <template>
   <div v-if="!data">Loading</div>
@@ -65,10 +67,16 @@ const handleClickEvolveChainItem = (id: number) => {
           @click="handleClickEvolveChainItem(item.id)"
           hover
         >
-          <!-- <v-img height="20vw" width="20vw" class="bg-grey-darken-3">{{
-            item.id
-          }}</v-img> -->
-          <v-img :src="image(item.id)" height="20vw" width="20vw"></v-img>
+          <v-img :src="image(item.id)" height="20vw" width="20vw" v-if="stage">
+            <div class="position-absolute" style="right: 2px">
+              {{ item.id }}
+            </div>
+          </v-img>
+          <v-img height="20vw" width="20vw" class="bg-grey-darken-3" v-else>
+            <div class="position-absolute" style="right: 2px">
+              {{ item.id }}
+            </div>
+          </v-img>
           <div>
             {{ item.name }}
           </div>

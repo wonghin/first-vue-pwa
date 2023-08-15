@@ -2,30 +2,22 @@
 import { useGetOnePokemonByProps } from "@/api/pokemonApi";
 import { computed, ref } from "vue";
 import LikeButton from "../button/LikeButton.vue";
+import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
+import { CardProps } from "./type";
 
-interface CardProps {
-  image?: string;
-  title: string;
-  id: number;
-  isLoading?: boolean;
+// interface TypeArray {
+//   types: TypeElement[];
+// }
 
-  // types?: Object
-  // weight?: number
-}
+// interface TypeElement {
+//   slot: number;
+//   type: Type;
+// }
 
-interface TypeArray {
-  types: TypeElement[];
-}
-
-interface TypeElement {
-  slot: number;
-  type: Type;
-}
-
-interface Type {
-  name: string;
-  url: string;
-}
+// interface Type {
+//   name: string;
+//   url: string;
+// }
 
 const cardProps = defineProps<CardProps>();
 
@@ -36,6 +28,7 @@ const imageUrl = computed(
 const name = ref<string>(cardProps.title);
 const id = ref<number>(cardProps.id);
 const { data, isLoading } = useGetOnePokemonByProps(id);
+const { stage } = useDevelopmentstore();
 </script>
 
 <template>
@@ -54,14 +47,15 @@ const { data, isLoading } = useGetOnePokemonByProps(id);
         <v-chip class="elevation-1" size="small">ID: {{ cardProps.id }}</v-chip>
       </div>
       <v-card-item class="d-flex justify-center align-center">
-        <v-img :src="imageUrl" height="20vh" width="20vh"> </v-img>
-        <!-- <v-img
+        <v-img :src="imageUrl" height="20vh" width="20vh" v-if="stage"> </v-img>
+        <v-img
           height="20vh"
           width="20vh"
           class="bg-grey-darken-3"
           style="z-index: -1"
+          v-else
         >
-        </v-img> -->
+        </v-img>
       </v-card-item>
 
       <v-card-title>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getAll } from "@/api/pokemonApi";
+import ScrollButton from "@/components/button/ScrollButton.vue";
 import Card from "@/components/card/Card.vue";
+import TinyCard from "@/components/card/TinyCard.vue";
 import PageCardSkeleton from "@/components/loading/PageCardSkeleton.vue";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import {
@@ -44,23 +46,17 @@ const handleToggle = ({ name, url }: { name: string; url: string }) => {
 watch(isFetching, () => {
   pokemonItem.paginationLoading = isFetching.value;
 });
-
-const scrollToBottom = () => {
-  window.scrollTo({
-    top: 99999,
-    left: 0,
-    behavior: "smooth",
-  });
-};
 </script>
 
 <template>
   <PageCardSkeleton v-if="isLoading" />
-  <v-icon
-    @click="scrollToBottom"
-    icon="mdi-menu-down"
-    size="x-large"
-    style="position: sticky; top: 80px"
+  <ScrollButton
+    :isUp="false"
+    style="position: fixed; bottom: 120px; right: 8px; z-index: 1"
+  />
+  <ScrollButton
+    :isUp="true"
+    style="position: fixed; bottom: 120px; left: 8px; z-index: 1"
   />
   <v-container
     fluid
@@ -80,14 +76,21 @@ const scrollToBottom = () => {
       <v-row v-if="data" class="mt-2">
         <v-col
           class="d-flex justify-center"
-          cols="12"
+          :cols="layout.isTinyGridView ? 6 : 12"
           sm="6"
           md="4"
           v-for="(item, index) in data.results"
           :key="item.name"
         >
           <div @click="handleToggle({ ...item })">
+            <TinyCard
+              v-if="layout.isTinyGridView"
+              :title="item.name"
+              :id="getImageUrlId(item.url)"
+              :isLoading="isLoading"
+            />
             <Card
+              v-else
               :title="item.name"
               :id="getImageUrlId(item.url)"
               :isLoading="isLoading"

@@ -1,53 +1,98 @@
-<script setup lang="ts">
-import { useForm } from 'vee-validate'
-//@ts-ignore
-import * as yup from 'yup'
+<script lang="ts" setup>
+import { basePokemonApi } from "@/constants";
+import axios from "axios";
+import { ref } from "vue";
+import { useInfiniteQuery } from "vue-query";
+import Container from "@/components/viewContainer/Container.vue";
+import { RefScroll } from "@/types/RefScroll";
+import TinyCard from "@/components/card/TinyCard.vue";
+import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
+import { getUrlId } from "@/utils/function";
+import { useLayoutStore } from "@/hooks/useLayoutStore";
+const peopleFetcher = async ({ pageParam = 1 }) => {
+  const num = 50;
+  const response = await axios.get(basePokemonApi + "pokemon", {
+    params: {
+      offset: (pageParam - 1) * num,
+      limit: num,
+    },
+  });
 
-const schema = yup.object({
-  name: yup.string().required().label('Name'),
-  email: yup.string().email().required().label('E-mail'),
-  password: yup.string().min(6).required(),
-  passwordConfirm: yup
-    .string()
-    .oneOf([yup.ref('password')], 'Passwords must match')
-    .required()
-    .label('Password confirmation'),
-  terms: yup.boolean().required().oneOf([true], 'You must agree to terms and conditions')
-})
+  return {
+    pageData: response.data || [],
+    cursor: pageParam + 1,
+  };
+};
 
-const { defineComponentBinds, handleSubmit, resetForm } = useForm({
-  validationSchema: schema
-})
+const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
+  useInfiniteQuery({
+    queryKey: ["getPokmonSpecies"],
+    queryFn: peopleFetcher,
+    getNextPageParam: (lastPage) => {
+      return lastPage.cursor;
+    },
+    refetchOnWindowFocus: false,
+  });
 
-// Refer to the docs for how to make advanced validation behaviors with dynamic configs
-// TODO: Add link
-const vuetifyConfig = (state: any) => ({
-  props: {
-    'error-messages': state.errors
+const nextPage = () => {
+  fetchNextPage.value();
+};
+
+const scrollContainer = ref<RefScroll | null>(null);
+
+const scrolling = (e: any) => {
+  const clientHeight = e.target.clientHeight;
+  const scrollHeight = e.target.scrollHeight;
+  const scrollTop = e.target.scrollTop;
+  if (scrollTop + clientHeight + 500 >= scrollHeight) {
+    fetchNextPage.value();
   }
-})
+};
 
-const name = defineComponentBinds('name', vuetifyConfig)
-const email = defineComponentBinds('email', vuetifyConfig)
-const password = defineComponentBinds('password', vuetifyConfig)
-const passwordConfirm = defineComponentBinds('passwordConfirm', vuetifyConfig)
-const terms = defineComponentBinds('terms', vuetifyConfig)
-
-const onSubmit = handleSubmit((values) => {
-  console.log('Submitted with', values)
-})
+const pokemonItem = usePokemonItemStore();
+const layout = useLayoutStore();
+const handleToggle = ({ name, url }: { name: string; url: string }) => {
+  pokemonItem.name = name;
+  pokemonItem.id = getUrlId(url);
+  pokemonItem.isPokemonItemOpen = !pokemonItem.isPokemonItemOpen;
+};
 </script>
-
 <template>
-  <v-form @submit="onSubmit" class="px-4">
-    <v-text-field v-bind="name" label="Name" />
-    <v-text-field v-bind="email" label="Email" type="email" />
-    <v-text-field v-bind="password" label="Password" type="password" />
-    <v-text-field v-bind="passwordConfirm" label="Password confirmation" type="password" />
-
-    <v-checkbox v-bind="terms" label="Do you agree?" color="primary" />
-
-    <v-btn color="primary" type="submit"> Submit </v-btn>
-    <v-btn color="outline" class="ml-4" @click="resetForm()"> Reset </v-btn>
-  </v-form>
+  <Container ref="scrollContainer" @scroll="scrolling">
+    <h1 v-if="isLoading">loading...</h1>
+    <v-row
+      v-if="data"
+      class="mt-2"
+      v-for="(page, index) in data?.pages"
+      :key="index"
+    >
+      <v-col
+        class="d-flex justify-center"
+        :cols="6"
+        sm="6"
+        md="6"
+        v-for="item in page.pageData.results"
+        :key="item.name"
+      >
+        <div @click="handleToggle({ ...item })">
+          <TinyCard
+            :title="item.name"
+            :id="getUrlId(item.url)"
+            :isLoading="isLoading"
+          />
+        </div>
+      </v-col>
+    </v-row>
+    <div class="d-flex justify-center mt-4" v-if="isFetching">
+      <v-progress-circular indeterminate color="purple"></v-progress-circular>
+    </div>
+    <v-btn
+      @click="nextPage"
+      v-if="hasNextPage && !isFetching"
+      class="mt-4 align-center"
+      style="width: 100vw"
+    >
+      Load More Data
+    </v-btn>
+  </Container>
 </template>

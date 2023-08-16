@@ -4,6 +4,7 @@ import ScrollButton from "@/components/button/ScrollButton.vue";
 import Card from "@/components/card/Card.vue";
 import TinyCard from "@/components/card/TinyCard.vue";
 import PageCardSkeleton from "@/components/loading/PageCardSkeleton.vue";
+import Container from "@/components/viewContainer/Container.vue";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import {
   usePokemonItemStore,
@@ -50,28 +51,10 @@ watch(isFetching, () => {
 
 <template>
   <PageCardSkeleton v-if="isLoading" />
-  <ScrollButton
-    :isUp="false"
-    style="position: fixed; bottom: 120px; right: 8px; z-index: 1"
-  />
-  <ScrollButton
-    :isUp="true"
-    style="position: fixed; bottom: 120px; left: 8px; z-index: 1"
-  />
-  <v-container
-    fluid
-    :class="
-      layout.isOpenDrawer || pokemonItem.isPokemonItemOpen
-        ? 'overflow-hidden'
-        : ''
-    "
-    :style="
-      layout.isOpenDrawer || pokemonItem.isPokemonItemOpen ? 'height:80vh' : ''
-    "
-  >
+
+  <Container>
     <div>
-      <div v-if="isLoading">Loading...</div>
-      <div v-else-if="isError">An error has occurred: {{ error }}</div>
+      <div v-if="isError">An error has occurred: {{ error }}</div>
 
       <v-row v-if="data" class="mt-2">
         <v-col
@@ -99,7 +82,6 @@ watch(isFetching, () => {
         </v-col>
       </v-row>
     </div>
-
     <v-pagination
       v-if="data"
       :length="100"
@@ -107,8 +89,8 @@ watch(isFetching, () => {
       v-on:prev="handlePagination"
       v-on:update:model-value="handlePagination"
       :density="sm || xs ? 'comfortable' : 'default'"
-      class="mb-16 mt-2"
+      class="mt-2"
     >
     </v-pagination>
-  </v-container>
+  </Container>
 </template>

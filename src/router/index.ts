@@ -9,6 +9,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import ProductView from '@/views/product/ProductView.vue'
 import SettingViewVue from '@/views/setting/SettingView.vue'
+import TestView from '@/views/TestView.vue'
 const rootRoutePage404: RouteRecordRaw[] = [
   {
     path: '/error',
@@ -69,6 +70,11 @@ export const mainRouter: RouteRecordRaw[] = [
         path: 'D3',
         name: 'D3',
         component: D3View
+      },
+      {
+        path: 'test',
+        name: 'test',
+        component: TestView
       },
 
 

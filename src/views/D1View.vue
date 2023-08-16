@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { useTestApi } from '@/api/pokemonApi'
 import { ref, watch, type Ref } from 'vue'
 import { useQuery } from 'vue-query'
@@ -39,4 +39,6 @@ const nextPage = () => {
       </li>
     </ul>
   </div>
-</template>
+</template> -->
+
+<template></template>

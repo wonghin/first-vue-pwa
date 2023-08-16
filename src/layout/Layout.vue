@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { useDisplay } from 'vuetify'
-import Drawer2 from '../layout/drawer/Drawer2.vue'
-import Drawer1 from '@/layout/drawer/Drawer1.vue'
-import TopNavBar from '@/layout/topNavBar/TopNavBar.vue'
-import Footer from './Footer.vue'
-import Footer2 from './Footer2.vue'
+import { useDisplay } from "vuetify";
+import Drawer2 from "../layout/drawer/Drawer2.vue";
+import Drawer1 from "@/layout/drawer/Drawer1.vue";
+import TopNavBar from "@/layout/topNavBar/TopNavBar.vue";
+import Footer from "./Footer.vue";
+import Footer2 from "./Footer2.vue";
 
-import ActionSheet from '@/views/ActionSheet.vue'
-const { sm, xs, md } = useDisplay()
+import ActionSheet from "@/views/ActionSheet.vue";
+import Container from "@/components/viewContainer/Container.vue";
+
+const { sm, xs, md } = useDisplay();
 </script>
 
 <template>
@@ -19,7 +21,7 @@ const { sm, xs, md } = useDisplay()
 
     <TopNavBar />
 
-    <v-main>
+    <v-main class="overflow-hidden" style="height: 100vh">
       <router-view></router-view>
     </v-main>
 

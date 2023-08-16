@@ -25,7 +25,7 @@ const { stage } = useDevelopmentstore();
       hover
     >
       <!-- <v-img :src="imageUrl" class="bg-grey-darken-3" v-if="stage"> </v-img> -->
-      <v-img height="70px" cover :src="imageUrl">
+      <v-img height="70px" :src="imageUrl" cover>
         <LikeButton class="position-absolute" style="right: 10px; top: 4px" />
         <div
           class="text-body-2 position-absolute"

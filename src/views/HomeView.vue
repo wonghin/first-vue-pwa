@@ -10,6 +10,7 @@ import {
   usePokemonItemStore,
   type PokemonItemStore,
 } from "@/hooks/usePokemonItemStore";
+import { getUrlId } from "@/utils/function";
 import { debounce } from "lodash";
 import { ref, watch } from "vue";
 import { useQuery } from "vue-query";
@@ -32,15 +33,9 @@ const handlePagination = debounce((pageNum: number) => {
   page.value = pageNum;
 }, 400);
 
-const getImageUrlId = (dataUrl: any) => {
-  const parts = dataUrl.split("/");
-  const number = parts[parts.length - 2];
-  return parseInt(number);
-};
-
 const handleToggle = ({ name, url }: { name: string; url: string }) => {
   pokemonItem.name = name;
-  pokemonItem.id = getImageUrlId(url);
+  pokemonItem.id = getUrlId(url);
   pokemonItem.isPokemonItemOpen = !pokemonItem.isPokemonItemOpen;
 };
 
@@ -69,13 +64,13 @@ watch(isFetching, () => {
             <TinyCard
               v-if="layout.isTinyGridView"
               :title="item.name"
-              :id="getImageUrlId(item.url)"
+              :id="getUrlId(item.url)"
               :isLoading="isLoading"
             />
             <Card
               v-else
               :title="item.name"
-              :id="getImageUrlId(item.url)"
+              :id="getUrlId(item.url)"
               :isLoading="isLoading"
             />
           </div>

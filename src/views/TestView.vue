@@ -9,6 +9,7 @@ import TinyCard from "@/components/card/TinyCard.vue";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
 import { getUrlId } from "@/utils/function";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
+import TinyCardSkeleton from "@/components/loading/TinyCardSkeleton.vue";
 const peopleFetcher = async ({ pageParam = 1 }) => {
   const num = 50;
   const response = await axios.get(basePokemonApi + "pokemon", {
@@ -59,7 +60,7 @@ const handleToggle = ({ name, url }: { name: string; url: string }) => {
 </script>
 <template>
   <Container ref="scrollContainer" @scroll="scrolling">
-    <h1 v-if="isLoading">loading...</h1>
+    <TinyCardSkeleton v-if="isLoading" />
     <v-row
       v-if="data"
       class="mt-2"

@@ -53,30 +53,16 @@ const matchPathPattern = (itemValue: string) => {
 </script>
 
 <template>
-  <div
-    style="position: fixed; bottom: 0; width: 100vw"
-    v-if="sm || xs"
-    class="elevation-8"
-    :style="{
-      'background-color': theme.global.current.value.dark
-        ? '#212121'
-        : '#FFFFFF',
-    }"
-  >
-    <div class="d-flex justify-space-around align-center mt-2 mb-6">
-      <v-icon
-        variant="text"
-        @click="handlerNav(item.value)"
-        :value="item.value"
-        v-for="item in drawerItems"
-        :key="item.value"
-        :icon="matchPathPattern(item.value) ? item.activeIcon : item.icon"
-        class="d-flex align-center"
-      >
-      </v-icon>
-      <!-- <v-btn variant="text" @click="handlerNav(item.value)" :value="item.value" v-for="item in drawerItems"
-        :key="item.value" :active="matchPathPattern(item.value)" :class="item.icon" class="d-flex align-center">
-      </v-btn> -->
-    </div>
-  </div>
+  <v-bottom-navigation grow>
+    <v-btn
+      variant="text"
+      v-for="item in drawerItems"
+      @click="handlerNav(item.value)"
+      :value="item.value"
+      :key="item.value"
+      :icon="matchPathPattern(item.value) ? item.activeIcon : item.icon"
+      class="d-flex align-center"
+    >
+    </v-btn>
+  </v-bottom-navigation>
 </template>

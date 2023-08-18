@@ -6,6 +6,7 @@ import _ from "lodash";
 import { getUrlId } from "@/utils/function";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
+import PokemonGifImageView from "./PokemonGifImageView.vue";
 
 interface Props {
   evolutionChainUrl: string;
@@ -72,6 +73,7 @@ const { stage } = useDevelopmentstore();
               {{ item.id }}
             </div>
           </v-img>
+
           <v-img height="20vw" width="20vw" class="bg-grey-darken-3" v-else>
             <div class="position-absolute" style="right: 2px">
               {{ item.id }}

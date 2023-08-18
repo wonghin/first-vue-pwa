@@ -25,15 +25,21 @@ const peopleFetcher = async ({ pageParam = 1 }) => {
   };
 };
 
-const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
-  useInfiniteQuery({
-    queryKey: ["getPokmonSpecies"],
-    queryFn: peopleFetcher,
-    getNextPageParam: (lastPage) => {
-      return lastPage.cursor;
-    },
-    refetchOnWindowFocus: false,
-  });
+const {
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetching,
+  isLoading,
+  isFetchingNextPage,
+} = useInfiniteQuery({
+  queryKey: ["getPokmonSpecies"],
+  queryFn: peopleFetcher,
+  getNextPageParam: (lastPage) => {
+    return lastPage.cursor;
+  },
+  refetchOnWindowFocus: false,
+});
 
 const nextPage = () => {
   fetchNextPage.value();
@@ -45,7 +51,10 @@ const scrolling = (e: any) => {
   const clientHeight = e.target.clientHeight;
   const scrollHeight = e.target.scrollHeight;
   const scrollTop = e.target.scrollTop;
-  if (scrollTop + clientHeight + 500 >= scrollHeight) {
+  if (
+    scrollTop + clientHeight + 500 >= scrollHeight &&
+    (!hasNextPage || isFetchingNextPage)
+  ) {
     fetchNextPage.value();
   }
 };

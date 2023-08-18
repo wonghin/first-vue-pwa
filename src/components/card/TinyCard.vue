@@ -52,6 +52,12 @@ const { stage } = useDevelopmentstore();
             {{ item.type.name }}
           </v-chip>
         </div>
+        <div
+          class="position-absolute"
+          style="right: 4px; bottom: 2px; font-size: x-small"
+        >
+          {{ cardProps.id }}
+        </div>
       </v-img>
     </v-card>
   </v-hover>

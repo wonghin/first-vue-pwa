@@ -1,33 +1,14 @@
-import { defineComponent, reactive, ref, type ComputedRef, type Ref } from "vue";
-import { useQuery } from "vue-query";
 import axios from "axios";
-import { basePokemonApi } from "@/constants";
-import { usePokemonItemStore } from '../hooks/usePokemonItemStore';
-import { storeToRefs } from "pinia";
-import type { PokemonItem } from "@/types/PokemonItem";
-import { EvolutionChain } from "@/types/EvolutionChain";
+import { type Ref } from "vue";
+import { useQuery } from "vue-query";
 
 
-export const useTestApi = (page: number) => {
-    const fetcher = () =>
-        fetch(
-            `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=10`,
-        ).then((response) => response.json())
-
-
-    return useQuery({
-        queryKey: ['projects', page],
-        queryFn: () => fetcher(),
-        keepPreviousData: true,
-    })
-
-}
 
 export const useGetBitImagePNG = (id: Ref<number>) => {
     const getBitImagePNG = async () => {
         const { data } = await axios({
             method: 'get',
-            url: '' + `${id}`
+            url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
         })
         return data
     }
@@ -37,16 +18,17 @@ export const useGetBitImagePNG = (id: Ref<number>) => {
         queryFn: () => getBitImagePNG(),
         enabled: true,
         refetchOnWindowFocus: false,
-        keepPreviousData: true
+        keepPreviousData: true,
+        retry: 2
     })
 }
 
 
-export const useGetBitImageGIf = (id: Ref<number>) => {
+export const useGetBitImageGIf = (id: number) => {
     const getBitImageGIF = async () => {
         const { data } = await axios({
             method: 'get',
-            url: '' + `${id}`
+            url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
         })
         return data
     }
@@ -56,6 +38,8 @@ export const useGetBitImageGIf = (id: Ref<number>) => {
         queryFn: () => getBitImageGIF(),
         enabled: true,
         refetchOnWindowFocus: false,
-        keepPreviousData: true
+        keepPreviousData: true,
+        retry: 2
+
     })
 }

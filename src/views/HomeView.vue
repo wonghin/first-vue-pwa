@@ -11,6 +11,7 @@ import {
   type PokemonItemStore,
 } from "@/hooks/usePokemonItemStore";
 import { getUrlId } from "@/utils/function";
+import _ from "lodash";
 import { debounce } from "lodash";
 import { ref, watch } from "vue";
 import { useQuery } from "vue-query";
@@ -42,6 +43,8 @@ const handleToggle = ({ name, url }: { name: string; url: string }) => {
 watch(isFetching, () => {
   pokemonItem.paginationLoading = isFetching.value;
 });
+
+const pageArray = _.range(1, 101);
 </script>
 
 <template>
@@ -77,15 +80,18 @@ watch(isFetching, () => {
         </v-col>
       </v-row>
     </div>
-    <v-pagination
-      v-if="data"
-      :length="100"
-      v-on:next="handlePagination"
-      v-on:prev="handlePagination"
-      v-on:update:model-value="handlePagination"
-      :density="sm || xs ? 'comfortable' : 'default'"
-      class="mt-2"
-    >
-    </v-pagination>
+    <div class="d-flex flex-column align-center" v-if="data">
+      <v-pagination
+        :length="100"
+        v-model="page"
+        v-on:next="handlePagination"
+        v-on:prev="handlePagination"
+        v-on:update:model-value="handlePagination"
+        :density="sm || xs ? 'comfortable' : 'default'"
+        class="mt-2"
+      >
+      </v-pagination>
+      <v-select v-model="page" :items="pageArray" density="compact"></v-select>
+    </div>
   </Container>
 </template>

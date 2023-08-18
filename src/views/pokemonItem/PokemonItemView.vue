@@ -3,7 +3,7 @@ import { useGetOnePokemonByProps, useGetPokmonSpecies } from "@/api/pokemonApi";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
 import { storeToRefs } from "pinia";
 import PokemonEvolutionChain from "./PokemonEvolutionChain.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import _ from "lodash";
 import { watch } from "vue";
 import { useDisplay } from "vuetify/lib/framework.mjs";
@@ -29,6 +29,11 @@ watch(data, (data) => {
   _.map(data?.stats, (item) => (sum += item.base_stat));
   total.value = sum;
 });
+
+const imageUrl = computed(
+  () =>
+    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+);
 </script>
 
 <template>
@@ -87,29 +92,24 @@ watch(data, (data) => {
               <v-img
                 :src="
                   data.sprites.versions?.['generation-v']['black-white']
-                    .animated?.front_default
+                    .animated?.front_default !== null
+                    ? data.sprites.versions?.['generation-v']['black-white']
+                        .animated?.front_default
+                    : imageUrl
                 "
                 height="30vw"
                 width="30vw"
                 max-height="300px"
                 max-width="300px"
-                v-if="stage"
-              ></v-img>
-              <v-img
+              >
+              </v-img>
+              <!-- <v-img
                 height="30vw"
                 width="30vw"
                 max-height="300px"
                 max-width="300px"
                 class="bg-grey-darken-3"
                 v-else
-              ></v-img>
-
-              <!-- <v-img
-                :src="data.sprites.versions?.['generation-v']['black-white'].animated?.back_default"
-                height="30vw"
-                width="30vw"
-                max-height="300px"
-                max-width="300px"
               ></v-img> -->
             </div>
             <div class="d-flex justify-center mt-8">
@@ -149,15 +149,9 @@ watch(data, (data) => {
               </v-progress-linear>
             </div>
           </div>
-          <!-- <div v-if="i === data.stats.length - 1" class="mt-2">
-            Total :{{ total }}
-          </div> -->
         </div>
         <div class="mt-4">Total: {{ total }}</div>
-        <div class="mt-10">
-          <!-- <div v-if="speciesFetching">loading...</div>
-          <div v-else-if="speciesData">capture rate: {{ speciesData.capture_rate }}</div> -->
-        </div>
+        <div class="mt-10"></div>
         <div v-if="speciesFetching"></div>
         <div v-else-if="speciesData">
           <PokemonEvolutionChain

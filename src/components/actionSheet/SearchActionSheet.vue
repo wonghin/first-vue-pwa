@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { useLayoutStore } from "@/hooks/useLayoutStore";
-import { reactive } from "vue";
+import CloseButton from "../button/CloseButton.vue";
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
-import SearchActionSheet from "../dialog/SearchActionSheet.vue";
+import SearchMoveField from "../searchField/SearchMoveField.vue";
 
 const layout = useLayoutStore();
-
-const submit = (e: Event) => {
-  const submitValue = (e.target as HTMLInputElement).value;
-  console.log(submitValue);
-};
 const strongType = ref(["Sandra Adams", "Britta Holt"]);
 const weakType = ref(["Sandra Adams"]);
 
@@ -21,47 +17,38 @@ const srcs = {
   5: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
 };
 const people = ref([
-  // TODO: https://github.com/vuetifyjs/vuetify/issues/15721
-  // { header: 'Group 1' },
   { name: "Sandra Adams", group: "Group 1", avatar: srcs[1] },
   { name: "Ali Connors", group: "Group 1", avatar: srcs[2] },
   { name: "Trevor Hansen", group: "Group 1", avatar: srcs[3] },
   { name: "Tucker Smith", group: "Group 1", avatar: srcs[2] },
-  // { divider: true },
-  // { header: 'Group 2' },
+
   { name: "Britta Holt", group: "Group 2", avatar: srcs[4] },
   { name: "Jane Smith ", group: "Group 2", avatar: srcs[5] },
   { name: "John Smith", group: "Group 2", avatar: srcs[1] },
   { name: "Sandra Williams", group: "Group 2", avatar: srcs[3] },
 ]);
-
-const isAdvancedSearch = ref(false);
 </script>
-
 <template>
-  <v-sheet
-    elevation="5"
-    rounded="lg"
-    min-height="20vh"
-    class="px-4 d-flex flex-column"
+  <v-navigation-drawer
+    v-model="layout.isOpenSearchDrawer"
+    location="right"
+    temporary
+    style="width: 90vw"
   >
-    <v-text-field
-      label="Search"
-      class="pt-11"
-      clearable
-      prepend-inner-icon="mdi-magnify"
-      density="compact"
-      @keydown.enter="submit"
-    >
-    </v-text-field>
-    <!-- @click="isAdvancedSearch = !isAdvancedSearch" -->
+    <CloseButton
+      :isClose="
+        () => {
+          layout.isOpenSearchDrawer = !layout.isOpenSearchDrawer;
+        }
+      "
+    />
     <v-btn
-      style="align-self: flex-start"
-      @click="layout.isOpenSearchDrawer = !layout.isOpenSearchDrawer"
-      >Advanced Search
+      icon="mdi-refresh"
+      class="position-absolute"
+      style="top: 10px; right: 10px"
+    >
     </v-btn>
-
-    <div v-if="isAdvancedSearch" class="mt-2">
+    <v-container class="mt-16">
       <v-row>
         <v-col>
           <v-autocomplete
@@ -123,21 +110,13 @@ const isAdvancedSearch = ref(false);
             </template>
           </v-autocomplete>
         </v-col>
+        <v-col cols="12"> Locations: </v-col>
+        <v-col cols="12"> Generations: </v-col>
+        <v-col cols="12"> <SearchMoveField /> </v-col>
       </v-row>
-    </div>
-
-    <v-switch
-      :label="layout.isInfiniteScroll ? 'Infinite scroll' : 'Pagination'"
-      v-model="layout.isInfiniteScroll"
-      class="d-flex"
-      style="align-self: flex-end"
-    ></v-switch>
-    <v-switch
-      :label="layout.isTinyGridView ? 'Small view' : 'Large view'"
-      v-model="layout.isTinyGridView"
-      class="d-flex"
-      style="align-self: flex-end"
-    >
-    </v-switch>
-  </v-sheet>
+    </v-container>
+    <v-container class="text-center">
+      <v-btn>Search</v-btn>
+    </v-container>
+  </v-navigation-drawer>
 </template>

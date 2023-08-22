@@ -13,7 +13,7 @@ const route = useRoute();
 const currentRouteName = computed(() => route.name);
 </script>
 <template>
-  <v-menu location="bottom">
+  <v-menu location="bottom" :closeOnBack="true">
     <template v-slot:activator="{ props }">
       <v-btn icon v-bind="props">
         <i class="material-icons more_vert"></i>
@@ -24,7 +24,10 @@ const currentRouteName = computed(() => route.name);
       <!-- <v-list-item v-for="(item, index) in array.items" :key="index" :value="index">
         <v-list-item-title icon>{{ item.title }}</v-list-item-title>
       </v-list-item> -->
-      <v-list-item value="viewStyle" v-if="isMobile && currentRouteName === 'home'">
+      <v-list-item
+        value="viewStyle"
+        v-if="isMobile && currentRouteName === 'home'"
+      >
         <ViewStyleButton />
       </v-list-item>
       <v-list-item value="setting">

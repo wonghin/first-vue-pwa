@@ -9,6 +9,7 @@ interface State {
     isPwa: boolean
     isInfiniteScroll: boolean
     scrollContainer: RefScroll | null
+    isOpenSearchDrawer: boolean
 
 }
 
@@ -20,7 +21,8 @@ export const useLayoutStore = defineStore('layout', {
             isTinyGridView: false,
             isPwa: true,
             isInfiniteScroll: false,
-            scrollContainer: null
+            scrollContainer: null,
+            isOpenSearchDrawer: false
         }
     },
 

@@ -5,25 +5,19 @@ import Footer2 from "./Footer2.vue";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import ActionSheet from "@/views/ActionSheet.vue";
 import Drawer3 from "./drawer/Drawer3.vue";
+const layout = useLayoutStore();
 
-const layout = useLayoutStore()
-
-window.addEventListener('DOMContentLoaded', () => {
-  let displayMode = 'browser tab';
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    displayMode = 'standalone';
-    layout.isPwa = true
-  } else if (displayMode = 'browser tab') {
-    layout.isPwa = false
-
+window.addEventListener("DOMContentLoaded", () => {
+  let displayMode = "browser tab";
+  if (window.matchMedia("(display-mode: standalone)").matches) {
+    displayMode = "standalone";
+    layout.isPwa = true;
+  } else if ((displayMode = "browser tab")) {
+    layout.isPwa = false;
   }
   // Log launch display mode to analytics
-  console.log('DISPLAY_MODE_LAUNCH:', displayMode);
+  console.log("DISPLAY_MODE_LAUNCH:", displayMode);
 });
-
-
-
-
 </script>
 
 <template>
@@ -36,7 +30,13 @@ window.addEventListener('DOMContentLoaded', () => {
     <TopNavBar />
     <!-- <TopNavBar v-if="layout.isPwa || isMobile" /> -->
 
-    <v-main :style="layout.isPwa ? `height: 100vh; overflow: hidden;` : ''">
+    <v-main
+      :style="
+        layout.isPwa || layout.isOpenSearchDrawer
+          ? `height: 100vh; overflow: hidden;`
+          : ''
+      "
+    >
       <router-view></router-view>
     </v-main>
 

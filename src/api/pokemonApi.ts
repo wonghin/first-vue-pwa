@@ -145,6 +145,21 @@ export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>) => {
         enabled: true,
         refetchOnWindowFocus: false,
         keepPreviousData: true
-
     });
+}
+
+
+export const useGetAllType = () => {
+    const getAllType = async () => {
+
+    }
+
+    return useQuery({
+        queryKey: ["getAllType"],
+        queryFn: () => getAllType(),
+        enabled: true,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true
+
+    })
 }

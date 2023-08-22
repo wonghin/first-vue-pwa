@@ -32,12 +32,16 @@ watch(data, (data) => {
   total.value = sum;
 });
 
-const imageUrl = computed(
-  () =>
-    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id.value}.png`
-);
-
-const imageUrl2 = computed(() => {});
+const imageUrl = computed(() => {
+  const imageGif =
+    data.value.sprites.versions?.["generation-v"]["black-white"].animated
+      ?.front_default;
+  if (imageGif !== null) {
+    return imageGif;
+  } else {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id.value}.png`;
+  }
+});
 </script>
 
 <template>
@@ -93,36 +97,14 @@ const imageUrl2 = computed(() => {});
           <div>
             <!-- <div style="height: 20vw; width: 20vw; background-color: brown" class="elevation-6"></div> -->
             <div class="d-flex justify-space-between">
-              <!-- <v-img
-                :src="imageUrl2"
-                height="30vw"
-                width="30vw"
-                max-height="300px"
-                max-width="300px"
-              >
-              </v-img> -->
               <v-img
-                :src="
-                  data.sprites.versions?.['generation-v']['black-white']
-                    .animated?.front_default !== null
-                    ? data.sprites.versions?.['generation-v']['black-white']
-                        .animated?.front_default
-                    : imageUrl
-                "
+                :src="imageUrl"
                 height="30vw"
                 width="30vw"
                 max-height="300px"
                 max-width="300px"
               >
               </v-img>
-              <!-- <v-img
-                height="30vw"
-                width="30vw"
-                max-height="300px"
-                max-width="300px"
-                class="bg-grey-darken-3"
-                v-else
-              ></v-img> -->
             </div>
             <div class="d-flex justify-center mt-8">
               {{ data.name }}

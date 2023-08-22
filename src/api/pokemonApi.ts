@@ -108,18 +108,19 @@ export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true
 }
 
 
-export const useGetPokmonSpecies = (id: Ref<number>) => {
-    const getPokmonSpecies = async () => {
+export const useGetPokmonSpecies = (id: Ref<number>, pokemonSpeciesUrl?: ComputedRef, enabled?: ComputedRef) => {
+
+    const getPokmonSpecies = async (pokemonSpeciesUrl: string) => {
         const { data } = await axios({
             method: 'get',
-            url: basePokemonApi + `pokemon-species/${id.value}/`
+            url: pokemonSpeciesUrl
         })
         return data
     }
     return useQuery({
-        queryKey: ["getPokmonSpecies", id],
-        queryFn: () => getPokmonSpecies(),
-        enabled: !!id,
+        queryKey: ["getPokmonSpecies", pokemonSpeciesUrl],
+        queryFn: () => getPokmonSpecies(pokemonSpeciesUrl?.value),
+        enabled: enabled,
         refetchOnWindowFocus: false,
         keepPreviousData: true
 

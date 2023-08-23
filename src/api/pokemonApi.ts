@@ -6,6 +6,7 @@ import { usePokemonItemStore } from '../hooks/usePokemonItemStore';
 import { storeToRefs } from "pinia";
 import type { PokemonItem } from "@/types/PokemonItem";
 import { EvolutionChain } from "@/types/EvolutionChain";
+import { PokemonType } from '../types/pokemonType';
 
 
 export const useTestApi = (page: number) => {
@@ -149,17 +150,47 @@ export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>) => {
 }
 
 
-export const useGetAllType = () => {
-    const getAllType = async () => {
+export const useGetAllType = (enabled: boolean = true) => {
+    const getAllType = async (): Promise<PokemonType> => {
+        const { data } = await axios({
+            method: 'get',
+            url: basePokemonApi + 'type'
+        })
 
+        return data
     }
 
     return useQuery({
         queryKey: ["getAllType"],
         queryFn: () => getAllType(),
-        enabled: true,
+        enabled: enabled,
         refetchOnWindowFocus: false,
-        keepPreviousData: true
+        keepPreviousData: true,
+        staleTime: Infinity
+
 
     })
 }
+
+export const useGetMovesFromType = (typeUrl: Ref<string>) => {
+    const getMovesFromType = async () => {
+        const { data } = await axios({
+            method: 'get',
+            url: typeUrl.value
+        })
+
+        return data
+    }
+    return useQuery({
+        queryKey: ["getAllType", typeUrl],
+        queryFn: () => getMovesFromType(),
+        enabled: !!typeUrl.value,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true,
+        staleTime: Infinity
+
+
+    })
+
+}
+

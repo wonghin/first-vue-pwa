@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useLayoutStore } from "@/hooks/useLayoutStore";
-import { reactive } from "vue";
 import { ref } from "vue";
-import SearchActionSheet from "../dialog/SearchActionSheet.vue";
+import PokemonTypeListButton from "../button/pokemonTypeListButton/PokemonTypeListButton.vue";
+import { useGetAllType } from "@/api/pokemonApi";
+
+const { data, isLoading, isError } = useGetAllType();
 
 const layout = useLayoutStore();
 
@@ -10,7 +12,7 @@ const submit = (e: Event) => {
   const submitValue = (e.target as HTMLInputElement).value;
   console.log(submitValue);
 };
-const strongType = ref(["Sandra Adams", "Britta Holt"]);
+const strongType = ref(["Britta Holt"]);
 const weakType = ref(["Sandra Adams"]);
 
 const srcs = {
@@ -52,15 +54,18 @@ const isAdvancedSearch = ref(false);
       prepend-inner-icon="mdi-magnify"
       density="compact"
       @keydown.enter="submit"
-    >
-    </v-text-field>
+      hide-details="auto"
+    />
+
     <!-- @click="isAdvancedSearch = !isAdvancedSearch" -->
+    <PokemonTypeListButton class="mt-2" />
     <v-btn
+      class="mt-4"
       style="align-self: flex-start"
       @click="layout.isOpenSearchDrawer = !layout.isOpenSearchDrawer"
       >Advanced Search
     </v-btn>
-
+    <!-- 
     <div v-if="isAdvancedSearch" class="mt-2">
       <v-row>
         <v-col>
@@ -124,16 +129,16 @@ const isAdvancedSearch = ref(false);
           </v-autocomplete>
         </v-col>
       </v-row>
-    </div>
+    </div> -->
 
     <v-switch
-      :label="layout.isInfiniteScroll ? 'Infinite scroll' : 'Pagination'"
+      :label="!layout.isInfiniteScroll ? 'Infinite scroll' : 'Pagination'"
       v-model="layout.isInfiniteScroll"
       class="d-flex"
       style="align-self: flex-end"
     ></v-switch>
     <v-switch
-      :label="layout.isTinyGridView ? 'Small view' : 'Large view'"
+      :label="!layout.isTinyGridView ? 'Small view' : 'Large view'"
       v-model="layout.isTinyGridView"
       class="d-flex"
       style="align-self: flex-end"

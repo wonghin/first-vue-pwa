@@ -5,7 +5,9 @@ import Footer2 from "./Footer2.vue";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import ActionSheet from "@/views/ActionSheet.vue";
 import Drawer3 from "./drawer/Drawer3.vue";
+import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
 const layout = useLayoutStore();
+const pokemonItem = usePokemonItemStore();
 
 window.addEventListener("DOMContentLoaded", () => {
   let displayMode = "browser tab";
@@ -32,7 +34,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     <v-main
       :style="
-        layout.isPwa || layout.isOpenSearchDrawer
+        layout.isPwa ||
+        layout.isOpenSearchDrawer ||
+        pokemonItem.isPokemonItemOpen
           ? `height: 100vh; overflow: hidden;`
           : ''
       "

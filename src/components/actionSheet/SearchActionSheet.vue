@@ -4,29 +4,24 @@ import CloseButton from "../button/CloseButton.vue";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import SearchMoveField from "../searchField/SearchMoveField.vue";
+import { useGetAllType } from "@/api/pokemonApi";
+import { computed } from "vue";
+import { watch } from "vue";
 
 const layout = useLayoutStore();
-const strongType = ref(["Sandra Adams", "Britta Holt"]);
-const weakType = ref(["Sandra Adams"]);
+const { data, isLoading, isError } = useGetAllType(false);
 
-const srcs = {
-  1: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-  2: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-  3: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-  4: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-  5: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
+const strongType = ref([]);
+const weakType = ref([]);
+const imageExists2 = (type: string) => {
+  try {
+    const typsString = type.charAt(0).toUpperCase() + type.slice(1);
+    require(`@/assets/pokemonTypeIcon2/${typsString}.png`);
+    return require(`@/assets/pokemonTypeIcon2/${typsString}.png`);
+  } catch (e) {
+    return "";
+  }
 };
-const people = ref([
-  { name: "Sandra Adams", group: "Group 1", avatar: srcs[1] },
-  { name: "Ali Connors", group: "Group 1", avatar: srcs[2] },
-  { name: "Trevor Hansen", group: "Group 1", avatar: srcs[3] },
-  { name: "Tucker Smith", group: "Group 1", avatar: srcs[2] },
-
-  { name: "Britta Holt", group: "Group 2", avatar: srcs[4] },
-  { name: "Jane Smith ", group: "Group 2", avatar: srcs[5] },
-  { name: "John Smith", group: "Group 2", avatar: srcs[1] },
-  { name: "Sandra Williams", group: "Group 2", avatar: srcs[3] },
-]);
 </script>
 <template>
   <v-navigation-drawer
@@ -46,14 +41,16 @@ const people = ref([
       icon="mdi-refresh"
       class="position-absolute"
       style="top: 10px; right: 10px"
+      elevation="0"
     >
     </v-btn>
-    <v-container class="mt-16">
+    <v-container class="mt-16" v-if="data">
+      <div style="font-weight: bold" class="mb-4">Type</div>
       <v-row>
         <v-col>
           <v-autocomplete
             v-model="strongType"
-            :items="people"
+            :items="data.results"
             chips
             closable-chips
             color="blue-grey-lighten-2"
@@ -65,7 +62,7 @@ const people = ref([
             <template v-slot:chip="{ props, item }">
               <v-chip
                 v-bind="props"
-                :prepend-avatar="item.raw.avatar"
+                :prepend-avatar="imageExists2(item.raw.name)"
                 :text="item.raw.name"
               ></v-chip>
             </template>
@@ -73,9 +70,8 @@ const people = ref([
             <template v-slot:item="{ props, item }">
               <v-list-item
                 v-bind="props"
-                :prepend-avatar="item?.raw?.avatar"
+                :prepend-avatar="imageExists2(item.raw.name)"
                 :title="item?.raw?.name"
-                :subtitle="item?.raw?.group"
               ></v-list-item>
             </template>
           </v-autocomplete>
@@ -83,7 +79,7 @@ const people = ref([
         <v-col>
           <v-autocomplete
             v-model="weakType"
-            :items="people"
+            :items="data.results"
             chips
             closable-chips
             color="blue-grey-lighten-2"
@@ -95,7 +91,7 @@ const people = ref([
             <template v-slot:chip="{ props, item }">
               <v-chip
                 v-bind="props"
-                :prepend-avatar="item.raw.avatar"
+                :prepend-avatar="imageExists2(item.raw.name)"
                 :text="item.raw.name"
               ></v-chip>
             </template>
@@ -103,13 +99,13 @@ const people = ref([
             <template v-slot:item="{ props, item }">
               <v-list-item
                 v-bind="props"
-                :prepend-avatar="item?.raw?.avatar"
+                :prepend-avatar="imageExists2(item.raw.name)"
                 :title="item?.raw?.name"
-                :subtitle="item?.raw?.group"
               ></v-list-item>
             </template>
           </v-autocomplete>
         </v-col>
+        <v-divider></v-divider>
         <v-col cols="12"> Locations: </v-col>
         <v-col cols="12"> Generations: </v-col>
         <v-col cols="12"> <SearchMoveField /> </v-col>

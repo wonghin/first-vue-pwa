@@ -58,27 +58,16 @@ const { stage } = useDevelopmentstore();
   <div v-if="!data">Loading</div>
   <div v-if="data">
     <v-row cols="12" sm="6" md="4">
-      <v-col
-        v-for="item in traverseObject(data).slice().reverse()"
-        :key="item.id"
-      >
+      <v-col v-for="item in traverseObject(data).slice().reverse()" :key="item.id">
         <!-- <v-img height="20vw" width="20vw" class="bg-blue-grey-darken-1"></v-img> -->
-        <v-card
-          class="d-flex flex-column justify-center align-center"
-          @click="handleClickEvolveChainItem(item.id)"
-          hover
-        >
-          <v-img :src="image(item.id)" height="20vw" width="20vw" v-if="stage">
+        <v-card class="d-flex flex-column justify-center align-center" @click="handleClickEvolveChainItem(item.id)" hover>
+          <v-img :src="image(item.id)" height="20vw" width="20vw">
             <div class="position-absolute" style="right: 2px">
               {{ item.id }}
             </div>
           </v-img>
 
-          <v-img height="20vw" width="20vw" class="bg-grey-darken-3" v-else>
-            <div class="position-absolute" style="right: 2px">
-              {{ item.id }}
-            </div>
-          </v-img>
+
           <div>
             {{ item.name }}
           </div>

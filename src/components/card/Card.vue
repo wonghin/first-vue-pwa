@@ -33,29 +33,24 @@ const { stage } = useDevelopmentstore();
 
 <template>
   <v-hover v-slot="{ isHovering, props }">
-    <v-card
-      width="30vw"
-      min-width="285"
-      v-bind="props"
-      :elevation="isHovering ? 24 : 6"
-      hover
-      :loading="cardProps.isLoading"
-      class="rounded-b-shaped"
-    >
+    <v-card width="30vw" min-width="285" v-bind="props" :elevation="isHovering ? 24 : 6" hover
+      :loading="cardProps.isLoading" class="rounded-b-shaped">
       <LikeButton class="position-absolute" style="left: 10px; top: 10px" />
+
       <div class="position-absolute" style="right: 10px; top: 10px">
         <v-chip class="elevation-1" size="small">ID: {{ cardProps.id }}</v-chip>
       </div>
       <v-card-item class="d-flex justify-center align-center">
-        <v-img :src="imageUrl" height="20vh" width="20vh" v-if="stage"> </v-img>
-        <v-img
+
+        <v-img :src="imageUrl" height="20vh" width="20vh"> </v-img>
+        <!-- <v-img
           height="20vh"
           width="20vh"
           class="bg-grey-darken-3"
           style="z-index: -1"
           v-else
         >
-        </v-img>
+        </v-img> -->
       </v-card-item>
 
       <v-card-title>
@@ -64,12 +59,7 @@ const { stage } = useDevelopmentstore();
 
       <v-card-text class="d-flex">
         <v-chip style="width: 60px" class="mr-2" v-if="isLoading"></v-chip>
-        <v-chip
-          v-if="data"
-          v-for="(item, index) in data.types"
-          :key="index"
-          class="mr-2 elevation-1"
-        >
+        <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 elevation-1">
           {{ item.type.name }}
         </v-chip>
       </v-card-text>

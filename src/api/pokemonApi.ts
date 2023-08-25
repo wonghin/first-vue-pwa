@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia";
 import type { PokemonItem } from "@/types/PokemonItem";
 import { EvolutionChain } from "@/types/EvolutionChain";
 import { PokemonType } from '../types/pokemonType';
+import { PokemonSpecies } from "@/types/PokemonSpecies";
 
 
 export const useTestApi = (page: number) => {
@@ -111,7 +112,7 @@ export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true
 
 export const useGetPokmonSpecies = (id: Ref<number>, pokemonSpeciesUrl?: ComputedRef, enabled?: ComputedRef) => {
 
-    const getPokmonSpecies = async (pokemonSpeciesUrl: string) => {
+    const getPokmonSpecies = async (pokemonSpeciesUrl: string): Promise<PokemonSpecies> => {
         const { data } = await axios({
             method: 'get',
             url: pokemonSpeciesUrl

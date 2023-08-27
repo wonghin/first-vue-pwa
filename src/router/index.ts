@@ -11,6 +11,7 @@ import ProductView from '@/views/product/ProductView.vue'
 import SettingViewVue from '@/views/setting/SettingView.vue'
 import TestView from '@/views/TestView.vue'
 import HomeView2 from '@/views/homeView/HomeView2.vue'
+import TestView2 from '@/views/testView/TestView2.vue'
 const rootRoutePage404: RouteRecordRaw[] = [
   {
     path: '/error',
@@ -77,6 +78,11 @@ export const mainRouter: RouteRecordRaw[] = [
         path: 'test',
         name: 'test',
         component: TestView
+      },
+      {
+        path: 'test2',
+        name: 'test2',
+        component: TestView2
       },
 
 

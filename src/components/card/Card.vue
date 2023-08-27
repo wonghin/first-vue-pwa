@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useGetOnePokemonByProps } from "@/api/pokemonApi";
+import { useGetAllType, useGetOnePokemonByProps } from "@/api/pokemonApi";
 import { computed, ref } from "vue";
 import LikeButton from "../button/LikeButton.vue";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import { CardProps } from "./type";
-
+import { upperCaseFirstLetter } from "@/utils/function";
 // interface TypeArray {
 //   types: TypeElement[];
 // }
@@ -29,6 +29,17 @@ const name = ref<string>(cardProps.title);
 const id = ref<number>(cardProps.id);
 const { data, isLoading } = useGetOnePokemonByProps(id);
 const { stage } = useDevelopmentstore();
+
+const { data: typeData } = useGetAllType(false);
+const imageExists2 = (type: string) => {
+  try {
+    const typsString = type.charAt(0).toUpperCase() + type.slice(1);
+    require(`@/assets/pokemonTypeIcon2/${typsString}.png`);
+    return require(`@/assets/pokemonTypeIcon2/${typsString}.png`);
+  } catch (e) {
+    return "";
+  }
+};
 </script>
 
 <template>
@@ -36,6 +47,8 @@ const { stage } = useDevelopmentstore();
     <v-card width="30vw" min-width="285" v-bind="props" :elevation="isHovering ? 24 : 6" hover
       :loading="cardProps.isLoading" class="rounded-b-shaped">
       <LikeButton class="position-absolute" style="left: 10px; top: 10px" />
+
+      <!-- <v-chip class="position-absolute">123</v-chip> -->
 
       <div class="position-absolute" style="right: 10px; top: 10px">
         <v-chip class="elevation-1" size="small">ID: {{ cardProps.id }}</v-chip>
@@ -54,13 +67,14 @@ const { stage } = useDevelopmentstore();
       </v-card-item>
 
       <v-card-title>
-        {{ cardProps.title }}
+        {{ upperCaseFirstLetter(cardProps.title) }}
       </v-card-title>
 
       <v-card-text class="d-flex">
         <v-chip style="width: 60px" class="mr-2" v-if="isLoading"></v-chip>
         <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 elevation-1">
-          {{ item.type.name }}
+          <v-img :src="imageExists2(item.type.name)" height="20px" width="20px" class="mr-2" />
+          {{ upperCaseFirstLetter(item.type.name) }}
         </v-chip>
       </v-card-text>
     </v-card>

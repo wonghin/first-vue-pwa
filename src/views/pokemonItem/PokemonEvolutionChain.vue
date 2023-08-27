@@ -55,9 +55,10 @@ const handleClickEvolveChainItem = (id: number) => {
 const { stage } = useDevelopmentstore();
 </script>
 <template>
-  <v-skeleton-loader v-if="!data" type="card" height="20vw" width="20vw"></v-skeleton-loader>
-  <div class="text-center" style="font-weight: bold;">Evolution Chain</div>
-  <div v-if="data">
+  <v-skeleton-loader v-if="!data" type="card" width="80vw"></v-skeleton-loader>
+
+  <div v-else-if="data">
+    <div class="text-center" style="font-weight: bold;">Evolution Chain</div>
     <v-row cols="12" sm="6" md="4">
       <v-col v-for="item in traverseObject(data).slice().reverse()" :key="item.id">
         <v-card class="d-flex flex-column justify-center align-center" @click="handleClickEvolveChainItem(item.id)" hover>

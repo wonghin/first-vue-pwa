@@ -10,8 +10,8 @@ import { useDisplay } from "vuetify/lib/framework.mjs";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import LikeButton from "@/components/button/LikeButton.vue";
 import PokemonVarietiesView from "./PokemonVarietiesView.vue";
-
-
+import PokemonItemTab from "@/components/tab/PokemonItemTab.vue";
+import { upperCaseFirstLetter } from "@/utils/function";
 const pokemonItem = usePokemonItemStore();
 const { name, id } = storeToRefs(pokemonItem);
 const { xs, sm } = useDisplay();
@@ -36,7 +36,7 @@ watch(data, (data) => {
 
 const imageUrl = computed(() => {
   const imageGif =
-    data.value.sprites.versions?.["generation-v"]["black-white"].animated
+    data.value?.sprites.versions?.["generation-v"]["black-white"].animated
       ?.front_default;
   if (imageGif !== null) {
     return imageGif;
@@ -83,8 +83,8 @@ const imageUrl = computed(() => {
               <v-img :src="imageUrl" height="30vw" width="30vw" max-height="300px" max-width="300px">
               </v-img>
             </div>
-            <div class="d-flex justify-center mt-8">
-              {{ data.name }}
+            <div class="d-flex justify-center mt-8" style="font-weight: bold;">
+              {{ upperCaseFirstLetter(data.name) }}
             </div>
             <div class="text-center">
               <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 mt-2">
@@ -112,13 +112,21 @@ const imageUrl = computed(() => {
         <div class="mt-10"></div>
         <div v-if="speciesFetching"></div>
         <div v-else-if="speciesData">
-          <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" />
-          <!-- <PokemonEvolutionChain
-            :evolutionChainUrl="speciesData.evolution_chain.url"
-            :name="name"
-            :id="id"
-          /> -->
-          <PokemonVarietiesView :varieties="speciesData.varieties" />
+          <!-- <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" /> -->
+
+          <!-- <PokemonVarietiesView :varieties="speciesData.varieties" /> -->
+          <PokemonItemTab>
+            <template #Envolutions>
+              <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" />
+              <PokemonVarietiesView :varieties="speciesData.varieties" />
+            </template>
+            <template #Moves>
+              <div class="text-center">Moves</div>
+            </template>
+            <template #Types>
+              <div class="text-center">Types</div>
+            </template>
+          </PokemonItemTab>
         </div>
       </div>
     </div>

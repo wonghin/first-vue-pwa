@@ -8,6 +8,7 @@ import type { PokemonItem } from "@/types/PokemonItem";
 import { EvolutionChain } from "@/types/EvolutionChain";
 import { PokemonType } from '../types/pokemonType';
 import { PokemonSpecies } from "@/types/PokemonSpecies";
+import { PokemonOne } from "@/types/PokemonOne";
 
 
 export const useTestApi = (page: number) => {
@@ -91,7 +92,7 @@ export const useGetOnePokemon = () => {
 }
 export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true) => {
 
-    async function getOnePokemon() {
+    async function getOnePokemon(): Promise<PokemonOne> {
         const { data } = await axios({
             method: 'get',
             url: basePokemonApi + `pokemon/${id.value}`

@@ -41,7 +41,10 @@ const handleClickVarieties = (id: number) => {
             </v-card>
         </v-col>
         <v-col v-if="props.varieties.length === 1">
-            Not exist
+            <div class="text-center">
+                Not exist
+
+            </div>
         </v-col>
     </v-row>
 </template>

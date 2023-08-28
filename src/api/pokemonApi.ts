@@ -6,6 +6,9 @@ import { usePokemonItemStore } from '../hooks/usePokemonItemStore';
 import { storeToRefs } from "pinia";
 import type { PokemonItem } from "@/types/PokemonItem";
 import { EvolutionChain } from "@/types/EvolutionChain";
+import { PokemonType } from '../types/pokemonType';
+import { PokemonSpecies } from "@/types/PokemonSpecies";
+import { PokemonOne } from "@/types/PokemonOne";
 
 
 export const useTestApi = (page: number) => {
@@ -27,8 +30,9 @@ export const useTestApi = (page: number) => {
 
 
 
-export const getAll = async ({ page }: { page: number }) => {
+export const getAll = async ({ page, lastLimit }: { page: number, lastLimit?: number }): Promise<PokemonType> => {
     let num = 12
+
     const response = await axios.get(basePokemonApi + 'pokemon', {
         params: {
             offset: (page - 1) * num,
@@ -63,6 +67,34 @@ export const useGetAllPokemon = (page: Ref<number>) => {
 
 
 
+export const useGetTotalPokemon = () => {
+    const getAll = async () => {
+        const getcount = await axios.get(basePokemonApi + 'pokemon', {
+
+        });
+
+        const response = await axios.get(basePokemonApi + 'pokemon', {
+            params: {
+                offset: 0,
+                limit: getcount.data.count
+            }
+        });
+
+        console.log(response.data);
+
+        return response.data;
+    };
+
+    return useQuery({
+        queryKey: ["getTotalPokemon"],
+        queryFn: () => getAll(),
+        enabled: true,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true
+    });
+}
+
+
 
 
 export const useGetOnePokemon = () => {
@@ -89,7 +121,7 @@ export const useGetOnePokemon = () => {
 }
 export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true) => {
 
-    async function getOnePokemon() {
+    async function getOnePokemon(): Promise<PokemonOne> {
         const { data } = await axios({
             method: 'get',
             url: basePokemonApi + `pokemon/${id.value}`
@@ -108,18 +140,19 @@ export const useGetOnePokemonByProps = (id: Ref<number>, enabled: boolean = true
 }
 
 
-export const useGetPokmonSpecies = (id: Ref<number>) => {
-    const getPokmonSpecies = async () => {
+export const useGetPokmonSpecies = (id: Ref<number>, pokemonSpeciesUrl?: ComputedRef, enabled?: ComputedRef) => {
+
+    const getPokmonSpecies = async (pokemonSpeciesUrl: string): Promise<PokemonSpecies> => {
         const { data } = await axios({
             method: 'get',
-            url: basePokemonApi + `pokemon-species/${id.value}/`
+            url: pokemonSpeciesUrl
         })
         return data
     }
     return useQuery({
-        queryKey: ["getPokmonSpecies", id],
-        queryFn: () => getPokmonSpecies(),
-        enabled: !!id,
+        queryKey: ["getPokmonSpecies", pokemonSpeciesUrl],
+        queryFn: () => getPokmonSpecies(pokemonSpeciesUrl?.value),
+        enabled: enabled,
         refetchOnWindowFocus: false,
         keepPreviousData: true
 
@@ -144,6 +177,51 @@ export const useGetEvolutionChain = (evolutionChainUrl: Ref<string>) => {
         enabled: true,
         refetchOnWindowFocus: false,
         keepPreviousData: true
-
     });
 }
+
+
+export const useGetAllType = (enabled: boolean = true) => {
+    const getAllType = async (): Promise<PokemonType> => {
+        const { data } = await axios({
+            method: 'get',
+            url: basePokemonApi + 'type'
+        })
+
+        return data
+    }
+
+    return useQuery({
+        queryKey: ["getAllType"],
+        queryFn: () => getAllType(),
+        enabled: enabled,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true,
+        staleTime: Infinity
+
+
+    })
+}
+
+export const useGetMovesFromType = (typeUrl: Ref<string>) => {
+    const getMovesFromType = async () => {
+        const { data } = await axios({
+            method: 'get',
+            url: typeUrl.value
+        })
+
+        return data
+    }
+    return useQuery({
+        queryKey: ["getAllType", typeUrl],
+        queryFn: () => getMovesFromType(),
+        enabled: !!typeUrl.value,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true,
+        staleTime: Infinity
+
+
+    })
+
+}
+

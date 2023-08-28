@@ -3,13 +3,15 @@ import D2View from '../views/D2View.vue'
 import D3View from '../views/D3View.vue'
 import AuthView from '@/views/AuthView.vue'
 import LoginView from '@/views/LoginView.vue'
+import HomeView from '@/views/homeView/HomeView.vue'
 import { useUserInfoStore } from '@/hooks/useUserInfoStore'
 import ErrorView from '../views/ErrorView.vue'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
 import ProductView from '@/views/product/ProductView.vue'
 import SettingViewVue from '@/views/setting/SettingView.vue'
 import TestView from '@/views/TestView.vue'
+import HomeView2 from '@/views/homeView/HomeView2.vue'
+import TestView2 from '@/views/testView/TestView2.vue'
 const rootRoutePage404: RouteRecordRaw[] = [
   {
     path: '/error',
@@ -43,7 +45,8 @@ export const mainRouter: RouteRecordRaw[] = [
       {
         path: 'home',
         name: 'home',
-        component: HomeView,
+        // component: HomeView,
+        component: HomeView2,
 
       },
       {
@@ -75,6 +78,11 @@ export const mainRouter: RouteRecordRaw[] = [
         path: 'test',
         name: 'test',
         component: TestView
+      },
+      {
+        path: 'test2',
+        name: 'test2',
+        component: TestView2
       },
 
 

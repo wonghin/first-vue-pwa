@@ -4,7 +4,7 @@ import LikeButton from "../button/LikeButton.vue";
 import { computed, ref } from "vue";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import { useGetOnePokemonByProps } from "@/api/pokemonApi";
-
+import _ from 'lodash'
 const cardProps = defineProps<CardProps>();
 const imageUrl = computed(
   () =>
@@ -17,45 +17,23 @@ const { stage } = useDevelopmentstore();
 </script>
 <template>
   <v-hover v-slot="{ isHovering, props }">
-    <v-card
-      width="48vw"
-      v-bind="props"
-      :loading="cardProps.isLoading"
-      :elevation="isHovering ? 24 : 6"
-      hover
-    >
+    <v-card width="48vw" v-bind="props" :loading="cardProps.isLoading" :elevation="isHovering ? 24 : 6" hover>
       <!-- <v-img :src="imageUrl" class="bg-grey-darken-3" v-if="stage"> </v-img> -->
       <v-img height="70px" cover :src="imageUrl">
         <LikeButton class="position-absolute" style="right: 10px; top: 4px" />
-        <div
-          class="text-body-2 position-absolute"
-          style="bottom: 10px; left: 10px"
-        >
+        <div class="text-body-2 position-absolute" style="bottom: 10px; left: 10px">
           <div style="width: 40vw">
-            {{ cardProps.title }}
+            {{ _.capitalize(cardProps.title) }}
           </div>
         </div>
         <div class="position-absolute" style="left: 4px">
-          <v-chip
-            v-if="isLoading"
-            style="width: 60px"
-            class="mr-2"
-            size="x-small"
-          ></v-chip>
-          <v-chip
-            v-if="data"
-            v-for="(item, index) in data.types"
-            :key="index"
-            class="mr-1 elevation-1 text-body-5"
-            size="x-small"
-          >
+          <v-chip v-if="isLoading" style="width: 60px" class="mr-2" size="x-small"></v-chip>
+          <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-1 elevation-1 text-body-5"
+            size="x-small">
             {{ item.type.name }}
           </v-chip>
         </div>
-        <div
-          class="position-absolute"
-          style="right: 4px; bottom: 2px; font-size: x-small"
-        >
+        <div class="position-absolute" style="right: 4px; bottom: 2px; font-size: x-small">
           {{ cardProps.id }}
         </div>
       </v-img>

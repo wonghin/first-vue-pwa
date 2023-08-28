@@ -4,7 +4,7 @@ import MyLayout from "./layout/MyLayout.vue";
 </script>
 
 <template>
-  <VueQueryDevTools position="top-left" />
+  <VueQueryDevTools />
   <router-view></router-view>
   <!-- <MyLayout /> -->
 </template>

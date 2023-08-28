@@ -22,7 +22,7 @@ const vuetify = createVuetify({
     },
     directives,
     ssr: true,
-    theme: { defaultTheme: 'dark' },
+    theme: { defaultTheme: 'light' },
     icons: {
         defaultSet: 'mdi', // This is already the default value - only for display purposes
     },
@@ -40,6 +40,5 @@ app.use(pinia)
 app.use(router)
 
 
-app
-    .mount('#app')
+app.mount('#app')
 

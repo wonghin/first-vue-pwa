@@ -27,28 +27,16 @@ const theme = useTheme();
     </div> -->
     <v-row>
       <v-col>
-        <a
-          href="https://www.andyhk.com/"
-          :style="{
-            color: theme.global.current.value.dark ? '#FFFFFF' : '#212121',
-          }"
-          >Visit my profile page</a
-        >
+        <a href="https://www.andyhk.com/" :style="{
+          color: theme.global.current.value.dark ? '#FFFFFF' : '#212121',
+        }">Visit my profile page</a>
       </v-col>
       <v-col>
         <div class="d-flex flex-column" style="align-items: end">
-          <v-btn
-            prepend-icon="mdi-github"
-            href="https://github.com/wonghin/first-vue-pwa"
-            variant="text"
-          >
+          <v-btn prepend-icon="mdi-github" href="https://github.com/wonghin/first-vue-pwa" variant="text">
             Pokedex
           </v-btn>
-          <v-btn
-            prepend-icon="mdi-link-box-variant"
-            href="https://github.com/wonghin/first-vue-pwa"
-            variant="text"
-          >
+          <v-btn prepend-icon="mdi-link-box-variant" href="https://pokeapi.co/" variant="text">
             Pokemon Api
           </v-btn>
         </div>

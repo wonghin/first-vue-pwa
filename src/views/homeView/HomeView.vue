@@ -4,6 +4,7 @@ import ScrollButton from "@/components/button/ScrollButton.vue";
 import Card from "@/components/card/Card.vue";
 import TinyCard from "@/components/card/TinyCard.vue";
 import PageCardSkeleton from "@/components/loading/PageCardSkeleton.vue";
+import SearchField from "@/components/searchField/SearchField.vue";
 import Container from "@/components/viewContainer/Container.vue";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import {
@@ -16,7 +17,7 @@ import { debounce } from "lodash";
 import { ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useDisplay } from "vuetify";
-const { xs, sm } = useDisplay();
+const { xs, sm, lg, md, xl } = useDisplay();
 const layout = useLayoutStore();
 
 const page = ref<number>(1);
@@ -50,46 +51,25 @@ const pageArray = _.range(1, 101);
 <template>
   <PageCardSkeleton v-if="isLoading" />
 
+
   <Container>
-    <div>
+    <SearchField />
+    <div class="mt-8">
       <div v-if="isError">An error has occurred: {{ error }}</div>
 
       <v-row v-if="data" class="mt-2">
-        <v-col
-          class="d-flex justify-center"
-          :cols="layout.isTinyGridView ? 6 : 12"
-          sm="6"
-          md="4"
-          v-for="(item, index) in data.results"
-          :key="item.name"
-        >
+        <v-col class="d-flex justify-center" :cols="layout.isTinyGridView ? 6 : 12" sm="6" md="4"
+          v-for="(item, index) in data.results" :key="item.name">
           <div @click="handleToggle({ ...item })">
-            <TinyCard
-              v-if="layout.isTinyGridView"
-              :title="item.name"
-              :id="getUrlId(item.url)"
-              :isLoading="isLoading"
-            />
-            <Card
-              v-else
-              :title="item.name"
-              :id="getUrlId(item.url)"
-              :isLoading="isLoading"
-            />
+            <TinyCard v-if="layout.isTinyGridView" :title="item.name" :id="getUrlId(item.url)" :isLoading="isLoading" />
+            <Card v-else :title="item.name" :id="getUrlId(item.url)" :isLoading="isLoading" />
           </div>
         </v-col>
       </v-row>
     </div>
     <div class="d-flex flex-column align-center" v-if="data">
-      <v-pagination
-        :length="100"
-        v-model="page"
-        v-on:next="handlePagination"
-        v-on:prev="handlePagination"
-        v-on:update:model-value="handlePagination"
-        :density="sm || xs ? 'comfortable' : 'default'"
-        class="mt-2"
-      >
+      <v-pagination :length="100" v-model="page" v-on:next="handlePagination" v-on:prev="handlePagination"
+        v-on:update:model-value="handlePagination" :density="sm || xs ? 'comfortable' : 'default'" class="mt-2 mx-6">
       </v-pagination>
       <v-select v-model="page" :items="pageArray" density="compact"></v-select>
     </div>

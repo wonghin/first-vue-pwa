@@ -66,6 +66,34 @@ export const useGetAllPokemon = (page: Ref<number>) => {
 
 
 
+export const useGetTotalPokemon = () => {
+    const getAll = async () => {
+        const getcount = await axios.get(basePokemonApi + 'pokemon', {
+
+        });
+
+        const response = await axios.get(basePokemonApi + 'pokemon', {
+            params: {
+                offset: 0,
+                limit: getcount.data.count
+            }
+        });
+
+        console.log(response.data);
+
+        return response.data;
+    };
+
+    return useQuery({
+        queryKey: ["getTotalPokemon"],
+        queryFn: () => getAll(),
+        enabled: true,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true
+    });
+}
+
+
 
 
 export const useGetOnePokemon = () => {

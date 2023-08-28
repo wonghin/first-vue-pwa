@@ -5,6 +5,7 @@ import LikeButton from "../button/LikeButton.vue";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import { CardProps } from "./type";
 import { upperCaseFirstLetter } from "@/utils/function";
+import { imageExist } from "@/utils/function";
 // interface TypeArray {
 //   types: TypeElement[];
 // }
@@ -31,15 +32,7 @@ const { data, isLoading } = useGetOnePokemonByProps(id);
 const { stage } = useDevelopmentstore();
 
 const { data: typeData } = useGetAllType(false);
-const imageExists2 = (type: string) => {
-  try {
-    const typsString = type.charAt(0).toUpperCase() + type.slice(1);
-    require(`@/assets/pokemonTypeIcon2/${typsString}.png`);
-    return require(`@/assets/pokemonTypeIcon2/${typsString}.png`);
-  } catch (e) {
-    return "";
-  }
-};
+
 </script>
 
 <template>
@@ -73,7 +66,7 @@ const imageExists2 = (type: string) => {
       <v-card-text class="d-flex">
         <v-chip style="width: 60px" class="mr-2" v-if="isLoading"></v-chip>
         <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 elevation-1">
-          <v-img :src="imageExists2(item.type.name)" height="20px" width="20px" class="mr-2" />
+          <v-img :src="imageExist(item.type.name)" height="20px" width="20px" class="mr-2" />
           {{ upperCaseFirstLetter(item.type.name) }}
         </v-chip>
       </v-card-text>

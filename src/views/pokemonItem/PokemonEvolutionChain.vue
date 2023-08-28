@@ -7,7 +7,6 @@ import { getUrlId } from "@/utils/function";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import PokemonGifImageView from "./PokemonGifImageView.vue";
-
 interface Props {
   evolutionChainUrl: string;
   name: string;
@@ -68,7 +67,7 @@ const { stage } = useDevelopmentstore();
             </div>
           </v-img>
           <div>
-            {{ item.name }}
+            {{ _.capitalize(item.name) }}
           </div>
         </v-card>
       </v-col>

@@ -6,12 +6,14 @@ import { useLayoutStore } from "@/hooks/useLayoutStore";
 import TestView from "../TestView.vue";
 import PokemonInfiniteScrollView from "./PokemonInfiniteScrollView.vue";
 import ScrollButton from "@/components/button/ScrollButton.vue";
+import { useSearchField } from "@/hooks/useSearchFieldStore";
 const layout = useLayoutStore();
 </script>
 
 <template>
   <PokemonPaginationView v-if="!layout.isInfiniteScroll" />
   <PokemonInfiniteScrollView v-else />
+
   <!-- <ScrollButton
     :isUp="true"
     style="position: fixed; bottom: 50px; right: 4px"

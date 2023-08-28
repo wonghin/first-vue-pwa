@@ -6,18 +6,11 @@ const layout = useLayoutStore();
 
 <template>
   <!-- Purpose: Only PWA || infiniteScroll-->
-  <v-container
-    fluid
-    style="overflow-y: auto"
-    :style="
-      layout.isInfiniteScroll ? `height:90vh` : `height: calc(100vh - 120px);`
-    "
-    v-if="layout.isPwa || layout.isInfiniteScroll"
-  >
+  <v-container fluid style="overflow-y: auto" :style="layout.isInfiniteScroll ? `height:90vh` : `height: calc(100vh - 120px);`
+    " v-if="layout.isPwa || layout.isInfiniteScroll">
     <slot></slot>
   </v-container>
   <!-- Purpose: Mobile browser and pc browser -->
-  <!--  -->
   <v-container v-else fluid>
     <slot> </slot>
   </v-container>

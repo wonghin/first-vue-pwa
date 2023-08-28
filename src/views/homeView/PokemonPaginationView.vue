@@ -11,14 +11,17 @@ import {
   usePokemonItemStore,
   type PokemonItemStore,
 } from "@/hooks/usePokemonItemStore";
+import { useSearchField } from "@/hooks/useSearchFieldStore";
 import { getUrlId } from "@/utils/function";
 import _ from "lodash";
 import { debounce } from "lodash";
 import { ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useDisplay } from "vuetify";
+
 const { xs, sm, lg, md, xl } = useDisplay();
 const layout = useLayoutStore();
+const searchField = useSearchField()
 
 const page = ref<number>(1);
 const pokemonItem = usePokemonItemStore();
@@ -52,7 +55,7 @@ const pageArray = _.range(1, 101);
   <Container>
     <SearchField class="mb-12" />
     <PageCardSkeleton v-if="isLoading" />
-    <div>
+    <div v-if="searchField.searchItem === ''">
       <div v-if="isError">An error has occurred: {{ error }}</div>
 
       <v-row v-if="data">
@@ -63,12 +66,12 @@ const pageArray = _.range(1, 101);
           <Card v-else :title="item.name" :id="getUrlId(item.url)" :isLoading="isLoading" />
         </v-col>
       </v-row>
-    </div>
-    <div class="d-flex flex-column align-center" v-if="data">
-      <v-pagination :length="100" v-model="page" v-on:next="handlePagination" v-on:prev="handlePagination"
-        v-on:update:model-value="handlePagination" :density="sm || xs ? 'comfortable' : 'default'" class="mt-2">
-      </v-pagination>
-      <v-select v-model="page" :items="pageArray" density="compact"></v-select>
+      <div class="d-flex flex-column align-center" v-if="data">
+        <v-pagination :length="100" v-model="page" v-on:next="handlePagination" v-on:prev="handlePagination"
+          v-on:update:model-value="handlePagination" :density="sm || xs ? 'comfortable' : 'default'" class="mt-2">
+        </v-pagination>
+        <v-select v-model="page" :items="pageArray" density="compact"></v-select>
+      </div>
     </div>
   </Container>
 </template>

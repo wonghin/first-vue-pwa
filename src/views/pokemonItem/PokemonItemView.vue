@@ -11,9 +11,11 @@ import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import LikeButton from "@/components/button/LikeButton.vue";
 import PokemonVarietiesView from "./PokemonVarietiesView.vue";
 import PokemonItemTab from "@/components/tab/PokemonItemTab.vue";
-import { upperCaseFirstLetter } from "@/utils/function";
+import { StopOverlayScroll, upperCaseFirstLetter } from "@/utils/function";
+import PokemonMoviesView from "./PokemonMoviesView.vue";
+import { imageExist } from "@/utils/function";
 const pokemonItem = usePokemonItemStore();
-const { name, id } = storeToRefs(pokemonItem);
+const { name, id, isPokemonItemOpen } = storeToRefs(pokemonItem);
 const { xs, sm } = useDisplay();
 const { stage } = useDevelopmentstore();
 
@@ -44,11 +46,21 @@ const imageUrl = computed(() => {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id.value}.png`;
   }
 });
+
+
+
+
+
+watch(isPokemonItemOpen, (value) => {
+  StopOverlayScroll(value)
+})
+
+
 </script>
 
 <template>
   <v-navigation-drawer location="bottom" temporary v-model="pokemonItem.isPokemonItemOpen"
-    style="height: 80vh; z-index: 9999" touchless class="rounded-t-xl">
+    style="height: 80vh; z-index: 9999" touchless class="rounded-t-xl ">
     <div v-if="isFetching"></div>
     <!-- <div v-else-if="isError">{{ error.message }}</div> -->
 
@@ -80,14 +92,17 @@ const imageUrl = computed(() => {
               <!-- <v-img :src="require('../../assets/pokeball-icon.png')" height="30vw" width="30vw" max-height="300px"
                 max-width="300px" style="opacity: 0.3;position:absolute">
               </v-img> -->
-              <v-img :src="imageUrl" height="30vw" width="30vw" max-height="300px" max-width="300px">
+              <v-img :src="imageUrl" height="30vw" width="30vw" max-height="300px" max-width="300px"
+                style="margin: auto;">
               </v-img>
             </div>
             <div class="d-flex justify-center mt-8" style="font-weight: bold;">
               {{ upperCaseFirstLetter(data.name) }}
             </div>
             <div class="text-center">
-              <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 mt-2">
+              <v-chip v-if="data" v-for="(item, index) in data.types" :key="index" class="mr-2 mt-2 elevation-1"
+                size="small">
+                <v-img :src="imageExist(item.type.name)" height="15px" width="15px" class="mr-1 " />
                 {{ item.type.name }}
               </v-chip>
             </div>
@@ -111,23 +126,21 @@ const imageUrl = computed(() => {
         <div class="mt-4">Total: {{ total }}</div>
         <div class="mt-10"></div>
         <div v-if="speciesFetching"></div>
-        <div v-else-if="speciesData">
-          <!-- <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" /> -->
+        <!-- <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" /> -->
 
-          <!-- <PokemonVarietiesView :varieties="speciesData.varieties" /> -->
-          <PokemonItemTab>
-            <template #Envolutions>
-              <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" />
-              <PokemonVarietiesView :varieties="speciesData.varieties" />
-            </template>
-            <template #Moves>
-              <div class="text-center">Moves</div>
-            </template>
-            <template #Types>
-              <div class="text-center">Types</div>
-            </template>
-          </PokemonItemTab>
-        </div>
+        <!-- <PokemonVarietiesView :varieties="speciesData.varieties" /> -->
+        <PokemonItemTab v-else-if="speciesData">
+          <template #Envolutions>
+            <PokemonEvolutionChain :evolutionChainUrl="speciesData.evolution_chain.url" :name="name" :id="id" />
+            <PokemonVarietiesView :varieties="speciesData.varieties" />
+          </template>
+          <template #Moves>
+            <PokemonMoviesView :move="data.moves" />
+          </template>
+          <template #Types>
+            <div class="text-center">Types</div>
+          </template>
+        </PokemonItemTab>
       </div>
     </div>
   </v-navigation-drawer>

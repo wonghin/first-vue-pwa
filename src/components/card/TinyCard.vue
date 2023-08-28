@@ -4,7 +4,7 @@ import LikeButton from "../button/LikeButton.vue";
 import { computed, ref } from "vue";
 import { useDevelopmentstore } from "@/hooks/useDevelopmentStore";
 import { useGetOnePokemonByProps } from "@/api/pokemonApi";
-
+import _ from 'lodash'
 const cardProps = defineProps<CardProps>();
 const imageUrl = computed(
   () =>
@@ -23,7 +23,7 @@ const { stage } = useDevelopmentstore();
         <LikeButton class="position-absolute" style="right: 10px; top: 4px" />
         <div class="text-body-2 position-absolute" style="bottom: 10px; left: 10px">
           <div style="width: 40vw">
-            {{ cardProps.title }}
+            {{ _.capitalize(cardProps.title) }}
           </div>
         </div>
         <div class="position-absolute" style="left: 4px">

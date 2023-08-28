@@ -8,9 +8,10 @@ import Drawer3 from "./drawer/Drawer3.vue";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
 import { watch } from "vue";
 import { storeToRefs } from "pinia";
+import { StopOverlayScroll } from "@/utils/function";
 const layout = useLayoutStore();
 const pokemonItem = usePokemonItemStore();
-const { isPokemonItemOpen } = storeToRefs(pokemonItem)
+
 
 window.addEventListener("DOMContentLoaded", () => {
   let displayMode = "browser tab";
@@ -24,16 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("DISPLAY_MODE_LAUNCH:", displayMode);
 });
 
-watch(isPokemonItemOpen, (value) => {
-  console.log(value);
-  if (value) {
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-  }
-})
+
 
 </script>
 
@@ -47,13 +39,16 @@ watch(isPokemonItemOpen, (value) => {
     <TopNavBar />
     <!-- <TopNavBar v-if="layout.isPwa || isMobile" /> -->
 
-    <v-main :style="layout.isPwa ||
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+    <!-- <v-main :style="layout.isPwa ||
       layout.isOpenSearchDrawer
       ? `height: 100vh; overflow: hidden;`
       : ''
       ">
       <router-view></router-view>
-    </v-main>
+    </v-main> -->
 
     <!-- <Footer /> -->
     <!-- <SpeedDial /> -->

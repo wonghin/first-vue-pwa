@@ -5,25 +5,7 @@ import Footer2 from "./Footer2.vue";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import ActionSheet from "@/views/ActionSheet.vue";
 import Drawer3 from "./drawer/Drawer3.vue";
-import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
-import { watch } from "vue";
-import { storeToRefs } from "pinia";
-import { StopOverlayScroll } from "@/utils/function";
 const layout = useLayoutStore();
-const pokemonItem = usePokemonItemStore();
-
-
-window.addEventListener("DOMContentLoaded", () => {
-  let displayMode = "browser tab";
-  if (window.matchMedia("(display-mode: standalone)").matches) {
-    displayMode = "standalone";
-    layout.isPwa = true;
-  } else if ((displayMode = "browser tab")) {
-    layout.isPwa = false;
-  }
-  // Log launch display mode to analytics
-  console.log("DISPLAY_MODE_LAUNCH:", displayMode);
-});
 
 
 

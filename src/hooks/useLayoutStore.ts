@@ -19,7 +19,7 @@ export const useLayoutStore = defineStore('layout', {
             isOpenDrawer: false,
             isTopActionSheet: true,
             isTinyGridView: false,
-            isPwa: true,
+            isPwa: false,
             isInfiniteScroll: false,
             scrollContainer: null,
             isOpenSearchDrawer: false

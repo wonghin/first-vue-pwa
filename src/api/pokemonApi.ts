@@ -30,8 +30,9 @@ export const useTestApi = (page: number) => {
 
 
 
-export const getAll = async ({ page }: { page: number }) => {
+export const getAll = async ({ page, lastLimit }: { page: number, lastLimit?: number }): Promise<PokemonType> => {
     let num = 12
+
     const response = await axios.get(basePokemonApi + 'pokemon', {
         params: {
             offset: (page - 1) * num,

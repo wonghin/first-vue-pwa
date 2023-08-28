@@ -24,11 +24,6 @@ const handleScroll = () => {
 </script>
 <template>
   <div>
-    <v-icon
-      v-if="sm || xs"
-      @click="handleScroll"
-      :icon="props.isUp ? 'mdi-menu-up' : 'mdi-menu-down'"
-      size="x-large"
-    />
+    <v-icon @click="handleScroll" :icon="props.isUp ? 'mdi-menu-up' : 'mdi-menu-down'" size="x-large" />
   </div>
 </template>

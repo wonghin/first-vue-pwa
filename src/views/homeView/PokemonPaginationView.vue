@@ -15,9 +15,10 @@ import { useSearchField } from "@/hooks/useSearchFieldStore";
 import { getUrlId } from "@/utils/function";
 import _ from "lodash";
 import { debounce } from "lodash";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useDisplay } from "vuetify";
+
 
 const { xs, sm, lg, md, xl } = useDisplay();
 const layout = useLayoutStore();
@@ -25,6 +26,8 @@ const searchField = useSearchField()
 
 const page = ref<number>(1);
 const pokemonItem = usePokemonItemStore();
+
+
 
 const { isLoading, isError, data, error, isFetching } = useQuery({
   queryKey: ["getAllPokemon", page],
@@ -36,6 +39,10 @@ const { isLoading, isError, data, error, isFetching } = useQuery({
 
 const handlePagination = debounce((pageNum: number) => {
   page.value = pageNum;
+  window.scrollTo({
+    top: 0,
+
+  });
 }, 400);
 
 const handleToggle = ({ name, url }: { name: string; url: string }) => {
@@ -48,12 +55,29 @@ watch(isFetching, () => {
   pokemonItem.paginationLoading = isFetching.value;
 });
 
-const pageArray = _.range(1, 101);
+const length = ref(100)
+const pageArray = computed(() => { return _.range(1, length.value + 1); })
+
+function checkAndReturnInteger(x: number) {
+  if (Number.isInteger(x)) {
+    return x;
+  } else {
+    return Math.floor(x);
+  }
+}
+
+watch(data, (value) => {
+  if (value?.next !== null && value?.next !== undefined) {
+    const totalPage = checkAndReturnInteger(value.count / 12)
+    length.value = totalPage + 1
+  }
+})
 </script>
 
 <template>
   <Container>
-    <SearchField class="mb-12" />
+    <!-- <SearchField class="mb-12" /> -->
+
     <PageCardSkeleton v-if="isLoading" />
     <div v-if="searchField.searchItem === ''">
       <div v-if="isError">An error has occurred: {{ error }}</div>
@@ -67,10 +91,12 @@ const pageArray = _.range(1, 101);
         </v-col>
       </v-row>
       <div class="d-flex flex-column align-center" v-if="data">
-        <v-pagination :length="100" v-model="page" v-on:next="handlePagination" v-on:prev="handlePagination"
-          v-on:update:model-value="handlePagination" :density="sm || xs ? 'comfortable' : 'default'" class="mt-2">
+        <v-pagination :length="length" v-model="page" v-on:next="handlePagination" v-on:prev="handlePagination"
+          v-on:update:model-value="handlePagination" :density="sm || xs ? 'comfortable' : 'default'" class="mt-2"
+          total-visible="4">
         </v-pagination>
-        <v-select v-model="page" :items="pageArray" density="compact"></v-select>
+        <v-select v-model="page" @update:model-value="handlePagination" :items="pageArray" density="compact"></v-select>
+        <!-- <ScrollButton :isUp="true" class="position-fixed" style="bottom: 0; right: 20px;" /> -->
       </div>
     </div>
   </Container>

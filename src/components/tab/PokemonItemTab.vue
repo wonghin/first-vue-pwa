@@ -8,7 +8,7 @@ const tab = ref(null)
         <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center" grow>
             <v-tab :value="1">Envolutions</v-tab>
             <v-tab :value="2">Moves</v-tab>
-            <v-tab :value="3">Types</v-tab>
+            <!-- <v-tab :value="3">Types</v-tab> -->
         </v-tabs>
         <v-window v-model="tab" style="min-height: 50vh;">
             <v-window-item v-for="n in 3" :key="n" :value="n">

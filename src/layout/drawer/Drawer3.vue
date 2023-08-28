@@ -65,7 +65,7 @@ const currentRouteName = computed(() => route.name)
             </v-list-item>
         </v-list>
         <template v-slot:append>
-            <ThemeButton class="pa-2" />
+            <!-- <ThemeButton class="pa-2" /> -->
         </template>
     </v-navigation-drawer>
     <!-- 

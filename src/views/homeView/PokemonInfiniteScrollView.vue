@@ -7,11 +7,13 @@ import Container from "@/components/viewContainer/Container.vue";
 import { RefScroll } from "@/types/RefScroll";
 import TinyCard from "@/components/card/TinyCard.vue";
 import { usePokemonItemStore } from "@/hooks/usePokemonItemStore";
-import { getUrlId } from "@/utils/function";
+import { StopOverlayScroll, getUrlId } from "@/utils/function";
 import { useLayoutStore } from "@/hooks/useLayoutStore";
 import TinyCardSkeleton from "@/components/loading/TinyCardSkeleton.vue";
 import Card from "@/components/card/Card.vue";
 import SearchField from "@/components/searchField/SearchField.vue";
+import { watch } from "vue";
+import { storeToRefs } from "pinia";
 const peopleFetcher = async ({ pageParam = 1 }) => {
   const num = 42;
   const response = await axios.get(basePokemonApi + "pokemon", {
@@ -54,7 +56,7 @@ const scrolling = (e: any) => {
   const scrollHeight = e.target.scrollHeight;
   const scrollTop = e.target.scrollTop;
   if (
-    scrollTop + clientHeight + 500 >= scrollHeight &&
+    scrollTop + clientHeight + 1000 >= scrollHeight &&
     (!hasNextPage || isFetchingNextPage)
   ) {
     fetchNextPage.value();
@@ -68,10 +70,12 @@ const handleToggle = ({ name, url }: { name: string; url: string }) => {
   pokemonItem.id = getUrlId(url);
   pokemonItem.isPokemonItemOpen = !pokemonItem.isPokemonItemOpen;
 };
+
+
 </script>
 <template>
   <Container ref="scrollContainer" @scroll="scrolling">
-    <SearchField class="mb-12" />
+    <!-- <SearchField class="mb-12" /> -->
     <TinyCardSkeleton v-if="isLoading" />
     <v-row v-if="data" v-for="(page, index) in data?.pages" :key="index">
       <v-col class="d-flex justify-center" :cols="layout.isTinyGridView ? 6 : 12" sm="6"

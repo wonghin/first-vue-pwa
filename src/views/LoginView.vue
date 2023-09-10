@@ -5,11 +5,14 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { useUserInfoStore } from "@/hooks/useUserInfoStore";
 import router from "@/router";
+import { ref } from "vue";
 
 interface LoginForm {
   email: string;
   password: string;
 }
+
+const visible = ref(false)
 
 const { sm, xs } = useDisplay();
 const userInfo = useUserInfoStore();
@@ -42,34 +45,29 @@ const onSubmit = handleSubmit((values) => {
   // console.log('Submitted with', values)
 });
 
+
+
+
 const theme = useTheme();
 </script>
 
 <template>
   <v-row no-gutters>
-    <v-col
-      cols="7"
-      v-if="!sm && !xs"
-      style="height: 100vh"
-      class="d-flex align-center justify-center"
-      :style="{
-        'background-color': theme.global.current.value.dark
-          ? '#000000'
-          : '#f6f6f6',
-      }"
-    >
+    <v-col cols="7" v-if="!sm && !xs" style="height: 100vh" class="d-flex align-center justify-center" :style="{
+      'background-color': theme.global.current.value.dark
+        ? '#000000'
+        : '#f6f6f6',
+    }">
       <!-- <div class="text-h2">Welcome Page</div> -->
     </v-col>
     <v-col cols="!sm&&!xs ? 12 : 5">
-      <v-sheet
-        style="height: 100vh"
-        class="d-flex align-center justify-center flex-column"
-      >
+      <v-sheet style="height: 100vh" class="d-flex align-center justify-center flex-column">
         <v-form @submit="onSubmit" style="width: 70%">
           <div class="text-h2 mb-10" v-if="sm || xs">Pokedex</div>
 
           <v-text-field v-bind="email" label="Email" type="email" />
-          <v-text-field v-bind="password" label="Password" type="password" />
+          <v-text-field v-bind="password" label="Password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible" />
           <v-btn type="submit" width="100%" class="mt-4" variant="outlined">
             Login
           </v-btn>

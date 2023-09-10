@@ -48,7 +48,7 @@ const { data: typeData } = useGetAllType(false);
       </div>
       <v-card-item class="d-flex justify-center align-center">
 
-        <v-img :src="imageUrl" height="20vh" width="20vh"> </v-img>
+        <v-img :lazy-src="imageUrl" :src="imageUrl" height="20vh" width="20vh"> </v-img>
         <!-- <v-img
           height="20vh"
           width="20vh"

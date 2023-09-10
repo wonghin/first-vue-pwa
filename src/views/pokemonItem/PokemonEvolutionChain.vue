@@ -61,7 +61,7 @@ const { stage } = useDevelopmentstore();
     <v-row cols="12" sm="6" md="4">
       <v-col v-for="item in traverseObject(data).slice().reverse()" :key="item.id">
         <v-card class="d-flex flex-column justify-center align-center" @click="handleClickEvolveChainItem(item.id)" hover>
-          <v-img :src="image(item.id)" height="20vw" width="20vw">
+          <v-img :src="image(item.id)" height="20vw" width="20vw" :lazy-src="image(item.id)">
             <div class="position-absolute" style="right: 2px">
               {{ item.id }}
             </div>

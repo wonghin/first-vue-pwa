@@ -92,7 +92,7 @@ watch(isPokemonItemOpen, (value) => {
               <!-- <v-img :src="require('../../assets/pokeball-icon.png')" height="30vw" width="30vw" max-height="300px"
                 max-width="300px" style="opacity: 0.3;position:absolute">
               </v-img> -->
-              <v-img :src="imageUrl" height="30vw" width="30vw" max-height="300px" max-width="300px"
+              <v-img :src="imageUrl" :lazy-src="imageUrl" height="30vw" width="30vw" max-height="300px" max-width="300px"
                 style="margin: auto;">
               </v-img>
             </div>
